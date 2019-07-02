@@ -7,32 +7,18 @@ import socket
 
 class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
-        print "Start tag:", tag
-        for attr in attrs:
-            print "     attr:", attr
+        if tag == "body":
+            print "Start tag:", tag
+            for attr in attrs:
+                print "     attr:", attr
 
     def handle_endtag(self, tag):
-        print "End tag  :", tag
+        if tag == "body":
+            print "End tag  :", tag
 
     def handle_data(self, data):
-        print "Data     :", data
-
-    def handle_comment(self, data):
-        print "Comment  :", data
-
-    def handle_entityref(self, name):
-        c = unichr(name2codepoint[name])
-        print "Named ent:", c
-
-    def handle_charref(self, name):
-        if name.startswith('x'):
-            c = unichr(int(name[1:], 16))
-        else:
-            c = unichr(int(name))
-        print "Num ent  :", c
-
-    def handle_decl(self, data):
-        print "Decl     :", data
+        if data != "\n" or data != "\n\n" or data != "\n\n\n":
+            print "Data: ", data
 
 class html(object):
  
@@ -103,10 +89,9 @@ class html(object):
 
 if __name__=="__main__":
         obj=html()
-        obj.html_connect("http://www.um.edu.ar/es/")
+        obj.html_connect("http://www.aconcagua.mendoza.gov.ar/")
         obj.html_read()
         buff = obj.html_showHTML()
-	
-        parser = MyHTMLParser()
+	parser = MyHTMLParser()
         parser.feed(buff)
         obj.html_close()
