@@ -5,20 +5,10 @@ from urlparse import urlparse
 import os,sys
 import socket
 
-class MyHTMLParser(HTMLParser):
-    def handle_starttag(self, tag, attrs):
-        if tag == "body":
-            print "Start tag:", tag
-            for attr in attrs:
-                print "     attr:", attr
-
-    def handle_endtag(self, tag):
-        if tag == "body":
-            print "End tag  :", tag
-
+class MyHTMLParser(HTMLParser): 
     def handle_data(self, data):
-        if data != "\n" or data != "\n\n" or data != "\n\n\n":
-            print "Data: ", data
+        #if data != "\n" or data != "\n\n" or data != "\n\n\n":
+            print data.strip() 
 
 class html(object):
  
@@ -89,7 +79,7 @@ class html(object):
 
 if __name__=="__main__":
         obj=html()
-        obj.html_connect("http://www.aconcagua.mendoza.gov.ar/")
+        obj.html_connect("https://listado.mercadolibre.com.ar/celular-samsumg#D[A:celular%20samsumg]")
         obj.html_read()
         buff = obj.html_showHTML()
 	parser = MyHTMLParser()
