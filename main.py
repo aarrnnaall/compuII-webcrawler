@@ -13,6 +13,5 @@ try:
         server.serve_forever()
 
 except KeyboardInterrupt:
-        print '^C received, shutting down the web server'
         server.socket.close()
 

@@ -2,7 +2,7 @@ import sqlite3
 import urllib2  
 from HTMLParser import HTMLParser  
 from urlparse import urlparse
-
+from parce import html
 
 class HREFParser(HTMLParser):  
     """
@@ -136,7 +136,8 @@ class Crawler(object):
         return empty string if response raise an HTTPError (not found, 500...)
         """
         try:
-            print "retrieving url... [%s] %s" % (self.domain, url)
+            #print "retrieving url... [%s] %s" % (self.domain, url)
+            print ("URL",self.domain + url)
             req = urllib2.Request('%s://%s%s' % (self.scheme, self.domain, url))
             response = urllib2.urlopen(req)
             return response.read().decode('ascii', 'ignore')

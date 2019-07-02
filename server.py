@@ -1,6 +1,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
-from crawler import Crawler
+from crawler import Crawler, CrawlerCache
 import cgi
 import re
 
@@ -60,7 +60,7 @@ class myHandler(BaseHTTPRequestHandler):
                         crawler = Crawler()
                         root_re = re.compile('^/$').match
                         crawler.crawl(nombre, no_cache=root_re)
-
+                        
                         print "URl: %s" % nombre
 			self.send_response(200)
 			self.end_headers()
