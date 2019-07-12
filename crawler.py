@@ -91,33 +91,20 @@ class Crawler(object):
                     n_urls = n_urls.union(get_local_links(html, self.domain))
             self._crawl(n_urls, max_depth-1)
 
-    def execute_query(self,url,titulo,descripcion):
+    def execute_query(self,url,title,description):
 
-        Host='127.0.0.1'
-        usuario='root'
-        password='root'
-        db_name='crawler'
-        query =''
-        datos=(Host,usuario,password,db_name)
-        conn=MySQLdb.connect(*datos)
-        cursor=conn.cursor()
-        cursor.execute(query)
+        sql = "INSERT INTO auto (url,title,description) VALUES(%s,%s,%s)"
+        args=(url, title, description)
+        con = mysql.connector.connect(user="root",password="",host="127.0.0.1",database="crawler")
+        cursor=con.cursor()
+        cursor.execute(sql,args)
+        con.commit()
+        con.close()
 
-        if query.upper().startTswitch('SELECT'):
-            data= cursor.fetchall()
-        else:
-            conn.comit()
-            data=None
 
-        cursor.close()
-        conn.close()
+        
 
-        return data
-
-        dato=(titulo,url,descripcion)
-        query="INSERT INTO auto (titulo,url,desc) VALUES('%s','%s','%s')"%dato
-
-        execute_query()
+        
 
 
     def curl(self, url):
@@ -125,6 +112,7 @@ class Crawler(object):
         return content at url.
         return empty string if response raise an HTTPError (not found, 500...)
         """
+        
         try:
             #print "retrieving url... [%s] %s" % (self.domain, url)
             
@@ -137,13 +125,14 @@ class Crawler(object):
             print("___________________________________Titulo_______________________________________________")
             #title = soup.title.string
             print(soup.title.string)
+            
             print("___________________________________Descripcion__________________________________________")
             for desc in desc:
                 #desc_cont = desc.get('content')
                 print(desc.get('content'))
             
-                
-            #self.execute_query(self.domain+url,soup.title.string,desc.get('content'))
+            if soup.title.string != "400":    
+                self.execute_query(self.domain+url,soup.title.string,desc.get('content'))
             req = urllib2.Request('%s://%s%s' % (self.scheme, self.domain, url))
             response = urllib2.urlopen(req)
             #print(response.read().decode('ascii','ignore'))
