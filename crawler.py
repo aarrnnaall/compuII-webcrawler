@@ -2,14 +2,10 @@ import sqlite3
 import urllib2 
 import requests
 from urlparse import urlparse
-<<<<<<< HEAD
-from parseo import html
-=======
 from HTMLParser import HTMLParser
 from parseo import MyHTMLParser
 from bs4 import BeautifulSoup
 import mysql.connector
->>>>>>> 644e6bcdb01667438ab7ce2e55eb849e12d47fd2
 
 class HREFParser(HTMLParser):
     """
