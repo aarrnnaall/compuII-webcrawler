@@ -1,6 +1,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
-from crawler import Crawler, CrawlerCache
+from crawler import Crawler
 import cgi
 import re
 
