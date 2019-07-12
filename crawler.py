@@ -2,7 +2,7 @@ import sqlite3
 import urllib2  
 from HTMLParser import HTMLParser  
 from urlparse import urlparse
-from parce import html
+from parseo import html
 
 class HREFParser(HTMLParser):  
     """
