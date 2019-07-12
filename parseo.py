@@ -1,5 +1,4 @@
-from HTMLParser import HTMLParser
-import requests 
+from HTMLParser import HTMLParser 
 
 class MyHTMLParser(HTMLParser):
 
@@ -10,10 +9,5 @@ class MyHTMLParser(HTMLParser):
                 if cont_sinesp[0:3] != '.ve' and cont_sinesp[0:4] != 'func' and cont_sinesp[0:3] != 'var':
                     if cont_sinesp[0:2] != "//":
                         print(cont_sinesp)
-                    
 
-if __name__=="__main__":
-	req = requests.get('http://www.um.edu.ar/es/')
-        parser = MyHTMLParser()
-        parser.feed(req.text)
         
