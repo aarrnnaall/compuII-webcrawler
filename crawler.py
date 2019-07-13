@@ -118,25 +118,30 @@ class Crawler(object):
             
             print("___________________________________Url__________________________________________________")
             print (self.domain + url)
-            #url = self.domain + url
-            req = requests.get("https://"+self.domain+url)
+            #url = self.domain + url 
+            req = requests.get("http://"+self.domain+url)
             soup = BeautifulSoup(req.text, "lxml") 
-            desc = soup.findAll('meta',attrs={'name':'description'})                
+            desc = soup.find('meta',attrs={'name':'description'})                
             print("___________________________________Titulo_______________________________________________")
             #title = soup.title.string
             print(soup.title.string)
-            
             print("___________________________________Descripcion__________________________________________")
-            for desc in desc:
+            #for desc in desc:
                 #desc_cont = desc.get('content')
+                       
+            try: 
                 print(desc.get('content'))
+            except Exception:
+                pass
             
-            if soup.title.string != "400":    
-                self.execute_query(self.domain+url,soup.title.string,desc.get('content'))
+            if soup.title.string != "400":
+               self.execute_query(self.domain+url,soup.title.string,desc)
+            
             req = urllib2.Request('%s://%s%s' % (self.scheme, self.domain, url))
             response = urllib2.urlopen(req)
             #print(response.read().decode('ascii','ignore'))
             return response.read().decode('ascii', 'ignore')
+        
         except urllib2.HTTPError, e:
-            print "error [%s] %s: %s" % (self.domain, url, e)
-            return ''
+             print "error [%s] %s: %s" % (self.domain, url, e)
+             return ''
