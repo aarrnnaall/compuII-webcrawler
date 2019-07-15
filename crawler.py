@@ -129,13 +129,12 @@ class Crawler(object):
             #for desc in desc:
                 #desc_cont = desc.get('content')
                        
-            try: 
-                print(desc.get('content'))
-            except Exception:
-                pass
-            
+            #try: 
+            #    print(desc.get('content'))
             if soup.title.string != "400":
-               self.execute_query(self.domain+url,soup.title.string,desc)
+                self.execute_query(self.domain+url,soup.title.string,desc.get('content'))
+            #except Exception:
+            #    pass
             
             req = urllib2.Request('%s://%s%s' % (self.scheme, self.domain, url))
             response = urllib2.urlopen(req)
