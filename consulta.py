@@ -5,4 +5,4 @@ c = db.cursor()
 c.execute("SELECT * FROM auto")
 result_set = c.fetchall()
 for row in result_set:
-    print(row[1])
+    print(row[2])

@@ -6,6 +6,7 @@ from HTMLParser import HTMLParser
 from parseo import MyHTMLParser
 from bs4 import BeautifulSoup
 import mysql.connector
+from hilo import MiHilo 
 
 class HREFParser(HTMLParser):
     """
@@ -116,21 +117,25 @@ class Crawler(object):
         try:
             #print "retrieving url... [%s] %s" % (self.domain, url)
             
-            print("___________________________________Url__________________________________________________")
+            print("\n___________________________________Url__________________________________________________")
             print (self.domain + url)
             #url = self.domain + url 
             req = requests.get("http://"+self.domain+url)
             soup = BeautifulSoup(req.text, "lxml") 
             desc = soup.find('meta',attrs={'name':'description'})                
-            print("___________________________________Titulo_______________________________________________")
-            #title = soup.title.string
-            print(soup.title.string)
-            print("___________________________________Descripcion__________________________________________")
+        
+            
             #for desc in desc:
                 #desc_cont = desc.get('content')
                        
             try: 
-                desc_cont=desc.get('content')
+                print("___________________________________Titulo_______________________________________________")
+                print(soup.title.string)
+                
+                print("___________________________________Descripcion__________________________________________")
+
+                desc_cont=desc.get('content').encode('utf-8')
+                
                 print(desc_cont)
         
             except Exception:
@@ -138,8 +143,17 @@ class Crawler(object):
                 pass
             
             if soup.title.string != "400":
-                    self.execute_query(self.domain+url,soup.title.string,desc_cont)
-
+                self.execute_query(self.domain+url,soup.title.string,desc_cont)
+                archivo=open('log.txt','a')
+                archivo.write(self.domain+url+"  ")
+                archivo.write(soup.title.string.encode('utf-8')+"  ")
+                if desc_cont != None:
+                    archivo.write(desc_cont+"  \n")
+                    
+                print("________________________________________________________________________________________")
+                hMiHilo = MiHilo(self.domain+url,soup.title.string,desc_cont)
+                hMiHilo.start()
+            
             req = urllib2.Request('%s://%s%s' % (self.scheme, self.domain, url))
             response = urllib2.urlopen(req)
             return response.read().decode('ascii', 'ignore')
