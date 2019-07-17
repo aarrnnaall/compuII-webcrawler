@@ -1,6 +1,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
-from crawler import Crawler, CrawlerCache
+from crawler import Crawler
 import cgi
 import re
 
@@ -10,9 +10,8 @@ class myHandler(BaseHTTPRequestHandler):
 	
 	#Handler for the GET requests
 	def do_GET(self):
-		if self.path=="/":
-			self.path="/index.html"
-
+	    #if self.path=="/":
+		    
 		try:
 			#Check the file extension required and
 			#set the right mime type
@@ -49,7 +48,7 @@ class myHandler(BaseHTTPRequestHandler):
 
 	#Handler for the POST requests
 	def do_POST(self):
-		if self.path=="/send":
+                if self.path=="/send":
 			form = cgi.FieldStorage(
 				fp=self.rfile, 
 				headers=self.headers,
