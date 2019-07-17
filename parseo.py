@@ -1,87 +1,14 @@
-from HTMLParser import HTMLParser
-from htmlentitydefs import name2codepoint
-import httplib
-from urlparse import urlparse
-import os,sys
-import socket
+from HTMLParser import HTMLParser 
 
-class MyHTMLParser(HTMLParser): 
+class MyHTMLParser(HTMLParser):
+
     def handle_data(self, data):
-        #if data != "\n" or data != "\n\n" or data != "\n\n\n":
-            print data.strip() 
+        cont_sinesp = ' '.join(data.split()) 
+        if cont_sinesp != "" and cont_sinesp[0:6] != 'jQuery' and cont_sinesp[0:6] != 'window' and cont_sinesp[0:6] != '(funct':
+            if cont_sinesp[0:6] != '!funct' and cont_sinesp[0:2] != '/*' and cont_sinesp[0:4] != '.orb':
+                if cont_sinesp[0:3] != '.ve' and cont_sinesp[0:4] != 'func' and cont_sinesp[0:3] != 'var':
+                    if cont_sinesp[0:2] != "//":
+                        print(cont_sinesp)
 
-class html(object):
- 
-	def __init__(self):
-		pass
- 
-	"""
-	Funcion que realiza la conexion.
-	Tiene que recibir: la url
-	"""
-	def html_connect(self,url):
-		socket.setdefaulttimeout(20)
-		try:
-			parse=urlparse(url)
-			if parse.scheme=="http":
-				#self.conn=httplib.HTTPConnection(parse.netloc,timeout=60)
-				self.conn=httplib.HTTPConnection(parse.netloc)
-			else:
-				#self.conn=httplib.HTTPSConnection(parse.netloc,timeout=60)
-				self.conn=httplib.HTTPSConnection(parse.netloc)
-			if parse.path=="":
-				# Si no disponemos de path le ponemos la barra
-				path="/"
-			elif parse.query:
-				# Si disponemos de path y query, realizamos el montaje
-				path="%s?%s" % (parse.path,parse.query)
-			else:
-				# Si solo disponemos de path
-				path=parse.path
-			self.conn.request("GET",path)
-			self.response1=self.conn.getresponse()
-			self.status=self.response1.status
-			self.reason=self.response1.reason
-			self.headers=self.response1.getheaders()
-		except socket.error:
-			#errno, errstr = sys.exc_info()[:2]
-			#if errno == socket.timeout:
-				#print "There was a timeout"
-			#else:
-				#print "There was some other socket error"
-			self.status=408
-		except:
-			self.status=404
- 
-	"""Muestra el estado"""
-	def html_showStatus(self):
-		try:
-			return self.status, self.reason
-		except:
-			return ""
- 
-	"""Lee el contenido"""
-	def html_read(self):
-		self.read1=self.response1.read()
- 
-	"""Muestra el contenido"""
-	def html_showHTML(self):
-		if self.read1:
-			return self.read1
-		return ""
- 
-	"""Cierra la conexion"""
-	def html_close(self):
-		try:
-			self.conn.close()
-		except:
-			pass
+        
 
-if __name__=="__main__":
-        obj=html()
-        obj.html_connect("https://listado.mercadolibre.com.ar/celular-samsumg#D[A:celular%20samsumg]")
-        obj.html_read()
-        buff = obj.html_showHTML()
-	parser = MyHTMLParser()
-        parser.feed(buff)
-        obj.html_close()

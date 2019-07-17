@@ -1,10 +1,14 @@
 import sqlite3  
-import urllib2  
-from HTMLParser import HTMLParser  
+import urllib2 
+import requests
 from urlparse import urlparse
-from parce import html
+from HTMLParser import HTMLParser
+from parseo import MyHTMLParser
+from bs4 import BeautifulSoup
+import mysql.connector
+from hilo import MiHilo 
 
-class HREFParser(HTMLParser):  
+class HREFParser(HTMLParser):
     """
     Parser that extracts hrefs
     """
@@ -16,7 +20,7 @@ class HREFParser(HTMLParser):
                 self.hrefs.add(dict_attrs['href'])
 
 
-def get_local_links(html, domain):  
+def get_local_links(html, domain):
     """
     Read through HTML content and returns a tuple of links
     internal to the given domain
@@ -34,48 +38,6 @@ def get_local_links(html, domain):
           if u_parse.netloc == domain:
             hrefs.add(u_parse.path)
     return hrefs
-
-
-class CrawlerCache(object):  
-    """
-    Crawler data caching per relative URL and domain.
-    """
-    def __init__(self, db_file):
-        self.conn = sqlite3.connect(db_file)
-        c = self.conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS sites
-            (domain text, url text, content text)''')
-        self.conn.commit()
-        self.cursor = self.conn.cursor()
-
-    def set(self, domain, url, data):
-        """
-        store the content for a given domain and relative url
-        """
-        self.cursor.execute("INSERT INTO sites VALUES (?,?,?)",
-            (domain, url, data))
-        self.conn.commit()
-
-    def get(self, domain, url):
-        """
-        return the content for a given domain and relative url
-        """
-        self.cursor.execute("SELECT content FROM sites WHERE domain=? and url=?",
-            (domain, url))
-        row = self.cursor.fetchone()
-        if row:
-            return row[0]
-
-    def get_urls(self, domain):
-        """
-        return all the URLS within a domain
-        """
-        self.cursor.execute("SELECT url FROM sites WHERE domain=?", (domain,))
-        # could use fetchone and yield but I want to release
-        # my cursor after the call. I could have create a new cursor tho.
-        # ...Oh well
-        return [row[0] for row in self.cursor.fetchall()]
-
 
 class Crawler(object):  
     def __init__(self, cache=None, depth=2):
@@ -130,17 +92,72 @@ class Crawler(object):
                     n_urls = n_urls.union(get_local_links(html, self.domain))
             self._crawl(n_urls, max_depth-1)
 
+    def execute_query(self,url,title,description):
+
+        sql = "INSERT INTO auto (url,title,description) VALUES(%s,%s,%s)"
+        args=(url, title, description)
+        con = mysql.connector.connect(user="root",password="",host="127.0.0.1",database="crawler")
+        cursor=con.cursor()
+        cursor.execute(sql,args)
+        con.commit()
+        con.close()
+
+
+        
+
+        
+
+
     def curl(self, url):
         """
         return content at url.
         return empty string if response raise an HTTPError (not found, 500...)
         """
+        
         try:
             #print "retrieving url... [%s] %s" % (self.domain, url)
-            print ("URL",self.domain + url)
+            
+            print("\n___________________________________Url__________________________________________________")
+            print (self.domain + url)
+            #url = self.domain + url 
+            req = requests.get("http://"+self.domain+url)
+            soup = BeautifulSoup(req.text, "lxml") 
+            desc = soup.find('meta',attrs={'name':'description'})                
+        
+            
+            #for desc in desc:
+                #desc_cont = desc.get('content')
+                       
+            try: 
+                print("___________________________________Titulo_______________________________________________")
+                print(soup.title.string)
+                
+                print("___________________________________Descripcion__________________________________________")
+
+                desc_cont=desc.get('content').encode('utf-8')
+                
+                print(desc_cont)
+        
+            except Exception:
+                desc_cont=None
+                pass
+            
+            if soup.title.string != "400":
+                self.execute_query(self.domain+url,soup.title.string,desc_cont)
+                archivo=open('log.txt','a')
+                archivo.write(self.domain+url+"  ")
+                archivo.write(soup.title.string.encode('utf-8')+"  ")
+                if desc_cont != None:
+                    archivo.write(desc_cont+"  \n")
+                    
+                print("________________________________________________________________________________________")
+                hMiHilo = MiHilo(self.domain+url,soup.title.string,desc_cont)
+                hMiHilo.start()
+            
             req = urllib2.Request('%s://%s%s' % (self.scheme, self.domain, url))
             response = urllib2.urlopen(req)
             return response.read().decode('ascii', 'ignore')
+        
         except urllib2.HTTPError, e:
             print "error [%s] %s: %s" % (self.domain, url, e)
             return ''
