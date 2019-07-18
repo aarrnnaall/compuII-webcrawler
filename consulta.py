@@ -1,8 +1,19 @@
-import mysql.connector
+import mmap
 
-db=mysql.connector.connect(host="localhost",user="root",password="",db="crawler")
-c = db.cursor()
-c.execute("SELECT * FROM auto")
-result_set = c.fetchall()
-for row in result_set:
-    print(row[2])
+class consultahtml(object):
+
+    def __init__(self,palabra):
+        buff_buscar = [] 
+        files = open('cont.txt', 'r') 
+        mapear = mmap.mmap(files.fileno(), 0, access=mmap.ACCESS_READ) 
+        while(True):
+            linea = mapear.readline()
+            if palabra in linea:
+                buff_buscar.append(linea)
+            if not linea:
+                break
+        buff = "".join(buff_buscar)
+        print(buff) 
+    
+
+            

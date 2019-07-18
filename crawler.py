@@ -90,23 +90,7 @@ class Crawler(object):
                     html = self.get(url)
                     self.set(url, html)
                     n_urls = n_urls.union(get_local_links(html, self.domain))
-            self._crawl(n_urls, max_depth-1)
-
-    def execute_query(self,url,title,description):
-
-        sql = "INSERT INTO auto (url,title,description) VALUES(%s,%s,%s)"
-        args=(url, title, description)
-        con = mysql.connector.connect(user="root",password="",host="127.0.0.1",database="crawler")
-        cursor=con.cursor()
-        cursor.execute(sql,args)
-        con.commit()
-        con.close()
-
-
-        
-
-        
-
+            self._crawl(n_urls, max_depth-1)    
 
     def curl(self, url):
         """
@@ -143,8 +127,8 @@ class Crawler(object):
                 pass
             
             if soup.title.string != "400":
-                self.execute_query(self.domain+url,soup.title.string,desc_cont)
-                archivo=open('log.txt','a')
+                #self.execute_query(self.domain+url,soup.title.string,desc_cont)
+                archivo=open('cont.txt','a')
                 archivo.write(self.domain+url+"  ")
                 archivo.write(soup.title.string.encode('utf-8')+"  ")
                 if desc_cont != None:
