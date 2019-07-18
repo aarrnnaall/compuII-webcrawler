@@ -3,7 +3,6 @@ import urllib2
 import requests
 from urlparse import urlparse
 from HTMLParser import HTMLParser
-from parseo import MyHTMLParser
 from bs4 import BeautifulSoup
 import mysql.connector
 from hilo import MiHilo 
