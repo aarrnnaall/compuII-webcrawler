@@ -7,21 +7,18 @@ class consultahtml(object):
         palabra_esp= palabra.split(" ")
         files = open('cont.txt', 'r') 
         mapear = mmap.mmap(files.fileno(), 0, access=mmap.ACCESS_READ) 
-        #for palabra_bus in palabra_esp: 
-        for palabra_bus in palabra_esp:
-            while(True):
-                a=palabra_bus
-                linea = mapear.readline()
-                if a in linea:
-                    print("---------------------------------------------------------------"+a)
+        #for palabra_bus in palabra_esp:
+        while(True):
+            linea = mapear.readline()
+            if palabra in linea:
+                buff_buscar.append(linea)
+
+            else:
+                if palabra.title() in linea:
                     buff_buscar.append(linea)
-                    a=None
-                else:
-                    if a.title() in linea:
-                        buff_buscar.append(linea)
-                        a=None
-                if not linea:
-                    break
+        
+            if not linea:
+                break
          
         if buff_buscar == []:
             print("No se encontro Nada")

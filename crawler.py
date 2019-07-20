@@ -5,7 +5,7 @@ from urlparse import urlparse
 from HTMLParser import HTMLParser
 from bs4 import BeautifulSoup
 import mysql.connector
-from hilo import MiHilo 
+from hiloguardar import MiHilo 
 
 class HREFParser(HTMLParser):
     """
@@ -125,17 +125,16 @@ class Crawler(object):
                 desc_cont=None
                 pass
             
-            if soup.title.string != "400":
-                #self.execute_query(self.domain+url,soup.title.string,desc_cont)
-                archivo=open('cont.txt','a')
-                archivo.write(self.domain+url+"  ")
-                archivo.write(soup.title.string.encode('utf-8')+"  ")
-                if desc_cont != None:
-                    archivo.write(desc_cont+"  \n")
+           # if soup.title.string != "400":
+            #    archivo=open('cont.txt','a')
+             #   archivo.write(self.domain+url+"  ")
+             #   archivo.write(soup.title.string.encode('utf-8')+"  ")
+             #   if desc_cont != None:
+             #       archivo.write(desc_cont+"  \n")
                     
-                print("________________________________________________________________________________________")
-                hMiHilo = MiHilo(self.domain+url,soup.title.string,desc_cont)
-                hMiHilo.start()
+            print("________________________________________________________________________________________")
+            hMiHilo = MiHilo(self.domain+url,soup.title.string.encode('utf-8'),desc_cont)
+            hMiHilo.start()
             
             req = urllib2.Request('%s://%s%s' % (self.scheme, self.domain, url))
             response = urllib2.urlopen(req)
