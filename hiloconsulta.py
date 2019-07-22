@@ -1,20 +1,26 @@
 import mmap
+import threading
 
-class consultahtml(object):
-
+class MiHilocons(threading.Thread):
+ 
     def __init__(self,palabra):
+        threading.Thread.__init__(self)
+        self.palabra = palabra
+        print(self.getName())
+
+    def run(self):
         buff_buscar = [] 
-        palabra_esp= palabra.split(" ")
+        palabra_esp= self.palabra.split(" ")
         files = open('cont.txt', 'r') 
         mapear = mmap.mmap(files.fileno(), 0, access=mmap.ACCESS_READ) 
         #for palabra_bus in palabra_esp:
         while(True):
             linea = mapear.readline()
-            if palabra in linea:
+            if self.palabra in linea:
                 buff_buscar.append(linea)
 
             else:
-                if palabra.title() in linea:
+                if self.palabra.title() in linea:
                     buff_buscar.append(linea)
         
             if not linea:

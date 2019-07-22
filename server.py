@@ -3,9 +3,8 @@ from os import curdir, sep
 from crawler import Crawler
 import cgi
 import re
-from consulta import consultahtml
-#This class will handles any incoming request from
-#the browser 
+from hiloconsulta import MiHilocons
+
 class myHandler(BaseHTTPRequestHandler):
 	
 	#Handler for the GET requests
@@ -74,7 +73,8 @@ class myHandler(BaseHTTPRequestHandler):
                                  'CONTENT_TYPE':self.headers['Content-Type'],
                         })
                         nom_const = form["consulta"].value
-                        const = consultahtml(nom_const)
+                        hMiHilo = MiHilocons(nom_const)
+                        hMiHilo.start()
 
                         print "Buscado: %s" % nom_const
                         self.send_response(200)
