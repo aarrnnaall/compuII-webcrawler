@@ -3,7 +3,7 @@ from os import curdir, sep
 from crawler import Crawler
 import cgi
 import re
-
+from consulta import consultahtml
 #This class will handles any incoming request from
 #the browser 
 class myHandler(BaseHTTPRequestHandler):
@@ -48,21 +48,37 @@ class myHandler(BaseHTTPRequestHandler):
 
 	#Handler for the POST requests
 	def do_POST(self):
-                if self.path=="/send":
+                if self.path=="/sendurl":
 			form = cgi.FieldStorage(
 				fp=self.rfile, 
 				headers=self.headers,
 				environ={'REQUEST_METHOD':'POST',
 		                 'CONTENT_TYPE':self.headers['Content-Type'],
 			})
-                        nombre = form["url"].value
+                        nom_url = form["url"].value
                         crawler = Crawler()
                         root_re = re.compile('^/$').match
-                        crawler.crawl(nombre, no_cache=root_re)
+                        crawler.crawl(nom_url, no_cache=root_re)
                         
-                        print "URl: %s" % nombre
+                        print "URl: %s" % nom_url
 			self.send_response(200)
 			self.end_headers()
                         self.wfile.write("Thanks for this URL: %s " % form["url"].value)
 			return 		
 			
+                if self.path=="/sendconsulta":
+                        form = cgi.FieldStorage(
+                                fp=self.rfile,
+                                headers=self.headers,
+                                environ={'REQUEST_METHOD':'POST',
+                                 'CONTENT_TYPE':self.headers['Content-Type'],
+                        })
+                        nom_const = form["consulta"].value
+                        const = consultahtml(nom_const)
+
+                        print "Buscado: %s" % nom_const
+                        self.send_response(200)
+                        self.end_headers()
+                        self.wfile.write("Thanks for this Search: %s " % form["consulta"].value)
+                        return
+
