@@ -62,7 +62,7 @@ class myHandler(BaseHTTPRequestHandler):
                         print "URl: %s" % nom_url
 			self.send_response(200)
 			self.end_headers()
-                        self.wfile.write("Thanks for this URL: %s " % form["url"].value)
+                        self.wfile.write("Thanks for this URL: %s " % nom_url)
 			return 		
 			
                 if self.path=="/sendconsulta":
@@ -79,6 +79,7 @@ class myHandler(BaseHTTPRequestHandler):
                         print "Buscado: %s" % nom_const
                         self.send_response(200)
                         self.end_headers()
-                        self.wfile.write("Thanks for this Search: %s " % form["consulta"].value)
+                        self.wfile.write("Thanks for this Search: %s " % nom_const)
                         return
+
 
