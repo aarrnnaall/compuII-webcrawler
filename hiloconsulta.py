@@ -10,11 +10,10 @@ class MiHilocons(threading.Thread):
 
     def run(self):
         buff_buscar = []
-        palabra_esp = [] 
         palabra_esp= self.palabra.split(" ")
         files = open('cont.txt', 'r') 
         mapear = mmap.mmap(files.fileno(), 0, access=mmap.ACCESS_READ) 
-        for palabra_bus in palabra_esp:
+        #for palabra_bus in palabra_esp:
         while(True):
             linea = mapear.readline()
             if self.palabra in linea:
