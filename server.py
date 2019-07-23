@@ -72,7 +72,8 @@ class myHandler(BaseHTTPRequestHandler):
                                 environ={'REQUEST_METHOD':'POST',
                                  'CONTENT_TYPE':self.headers['Content-Type'],
                         })
-                        nom_const = form["consulta"].value
+                       #nom_const = form["consulta"].value
+                        nom_const= autos
                         hMiHilo = MiHilocons(nom_const)
                         hMiHilo.start()
 
