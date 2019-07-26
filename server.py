@@ -1,10 +1,10 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
-from crawler import Crawler
+from webcrawler import CrawlerThread
 import cgi
 import re
 from hiloconsulta import MiHilocons
-
+import threading
 class myHandler(BaseHTTPRequestHandler):
 	
 	#Handler for the GET requests
@@ -54,15 +54,18 @@ class myHandler(BaseHTTPRequestHandler):
 				environ={'REQUEST_METHOD':'POST',
 		                 'CONTENT_TYPE':self.headers['Content-Type'],
 			})
-                        nom_url = form["url"].value
-                        crawler = Crawler()
-                        root_re = re.compile('^/$').match
-                        crawler.crawl(nom_url, no_cache=root_re)
+                        ing_url = form["url"].value
+                        urls=ing_url.split()
+                        #urls=[("https://www.chevrolet.com.ar/")]
+                        binarySemaphore = threading.Semaphore(1)
+                        for url in urls:
+                            CrawlerThread(binarySemaphore, url).start()
+                        print(urls)
                         
-                        print "URl: %s" % nom_url
+                        print "URl: %s" % ing_url
 			self.send_response(200)
 			self.end_headers()
-                        self.wfile.write("Thanks for this URL: %s " % nom_url)
+                        self.wfile.write("Thanks for this URL: %s " % ing_url)
 			return 		
 			
                 if self.path=="/sendconsulta":
