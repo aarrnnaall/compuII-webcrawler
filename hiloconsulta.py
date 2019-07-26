@@ -9,7 +9,7 @@ class MiHilocons(threading.Thread):
         print(self.getName())
 
     def run(self):
-        buff_buscar = [] 
+        buff_buscar = []
         palabra_esp= self.palabra.split(" ")
         files = open('cont.txt', 'r') 
         mapear = mmap.mmap(files.fileno(), 0, access=mmap.ACCESS_READ) 
