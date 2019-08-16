@@ -3,6 +3,7 @@ from HTMLParser import HTMLParser
 import sys
 from bs4 import BeautifulSoup
 import requests
+import Queue
 
 class LinkHTMLParser(HTMLParser):
       A_TAG = "a"
@@ -43,17 +44,18 @@ class CrawlerThread(threading.Thread):
           print "Url %s" %(self.url)
       	  #print "Retreived the following links..." %(self.threadId)
 	  urls = []
-	  archivo=open('cont.txt','a')
+	  #archivo=open('cont.txt','a')
           for link in linkHTMLParser.links:
 	      link = urlparse.urljoin(self.url, link)
 	      urls.append(link)
-      	  
+      	  in_queue =  Queue.Queue()
           url_sinrep=[]
+          print("Escribiendo en la Cola...")
           for elemento in urls:
               if not elemento in url_sinrep:
                   url_sinrep.append(elemento)
           for url_most in url_sinrep:
-              print "\t"+url_most
+              #print "\t"+url_most
               req = requests.get(url_most)
               soup = BeautifulSoup(req.text, "lxml")
               try: 
@@ -63,8 +65,13 @@ class CrawlerThread(threading.Thread):
                  pass
               if title == "400":
                  title = ""
-              archivo.write(url_most+" ")
-              archivo.write(title+"\n")
-              print("\t\t"+title)
+              in_queue.put(url_most +" "+ title)
+              
+          
+          while not in_queue.empty():
+              print(in_queue.get())
+              #archivo.write(url_most+" ")
+              #archivo.write(title+"\n")
+              #print("\t\t"+title)
 
           self.binarySemaphore.release()	     	 
