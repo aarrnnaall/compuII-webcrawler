@@ -60,7 +60,7 @@ class myHandler(BaseHTTPRequestHandler):
                         binarySemaphore = threading.Semaphore(1)
                         for url in urls:
                             CrawlerThread(binarySemaphore, url).start()
-                        print(urls)
+                       #print(urls)
                         
                         print "URl: %s" % ing_url
 			self.send_response(200)
