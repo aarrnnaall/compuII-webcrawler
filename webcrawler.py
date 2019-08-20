@@ -55,6 +55,7 @@ class CrawlerThread(threading.Thread):
           for elemento in urls:
               if not elemento in url_sinrep:
                   url_sinrep.append(elemento)
+          #self.cond.acquire()
           for url_most in url_sinrep:
               #print "\t"+url_most
               req = requests.get(url_most)
@@ -67,11 +68,15 @@ class CrawlerThread(threading.Thread):
               if title == "400":
                  title = ""
               self.cond.acquire()
-              if not self.in_queue.empty():
-                 self.cond.wait()
-              self.in_queue.put(url_most +" "+ title)
-              print("Metiendo--> "+ url_most +" "+ title)
+              if self.in_queue.empty():
+                 self.in_queue.put(url_most +" "+ title)
+                 print("Metiendo--> "+ url_most +" "+ title)
+              #else:
+              #   print("Esperando Hilo Metiendo")
+              #   self.cond.wait(2)
               self.cond.notify()
               self.cond.release()
-              
+          self.in_queue.put(" ")
+          #self.cond.notify()
+          #self.cond.release()
           self.binarySemaphore.release()	     	 
