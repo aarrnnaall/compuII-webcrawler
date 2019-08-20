@@ -3,8 +3,7 @@ from HTMLParser import HTMLParser
 import sys
 from bs4 import BeautifulSoup
 import requests
-import Queue
-
+import time
 class LinkHTMLParser(HTMLParser):
       A_TAG = "a"
       HREF_ATTRIBUTE = "href"
@@ -25,10 +24,12 @@ class LinkHTMLParser(HTMLParser):
 
 
 class CrawlerThread(threading.Thread):
-      def __init__(self, binarySemaphore, url):
+      def __init__(self, binarySemaphore, url, in_queue,cond):
       	  self.binarySemaphore = binarySemaphore
 	  self.url = url
-	  threading.Thread.__init__(self)
+	  self.in_queue = in_queue
+          self.cond = cond
+          threading.Thread.__init__(self)
 
       def run(self):
       	  """Print out all of the links on the given url associated with this particular thread. Grab the passed in 
@@ -48,7 +49,7 @@ class CrawlerThread(threading.Thread):
           for link in linkHTMLParser.links:
 	      link = urlparse.urljoin(self.url, link)
 	      urls.append(link)
-      	  in_queue =  Queue.Queue()
+      	  #in_queue =  Queue.Queue()
           url_sinrep=[]
           print("Escribiendo en la Cola...")
           for elemento in urls:
@@ -65,13 +66,12 @@ class CrawlerThread(threading.Thread):
                  pass
               if title == "400":
                  title = ""
-              in_queue.put(url_most +" "+ title)
+              self.cond.acquire()
+              if not self.in_queue.empty():
+                 self.cond.wait()
+              self.in_queue.put(url_most +" "+ title)
+              print("Metiendo--> "+ url_most +" "+ title)
+              self.cond.notify()
+              self.cond.release()
               
-          
-          while not in_queue.empty():
-              print(in_queue.get())
-              #archivo.write(url_most+" ")
-              #archivo.write(title+"\n")
-              #print("\t\t"+title)
-
           self.binarySemaphore.release()	     	 
