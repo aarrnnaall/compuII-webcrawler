@@ -5,6 +5,9 @@ import cgi
 import re
 from hiloconsulta import MiHilocons
 import threading
+import Queue
+from hiloguardar import MiHilo
+import time
 class myHandler(BaseHTTPRequestHandler):
 	
 	#Handler for the GET requests
@@ -56,17 +59,20 @@ class myHandler(BaseHTTPRequestHandler):
 			})
                         ing_url = form["url"].value
                         urls=ing_url.split()
-                        #urls=[("https://www.chevrolet.com.ar/")]
                         binarySemaphore = threading.Semaphore(1)
+                        in_queue = Queue.Queue()
+                        cond = threading.Condition()
                         for url in urls:
-                            CrawlerThread(binarySemaphore, url).start()
-<<<<<<< HEAD
-             #               CrawlerThread(url).start()
-                        print(urls)
-=======
-                       #print(urls)
->>>>>>> 9f460ee3c4334d917ef73e2e1a5db6b7e691e6a6
-                        
+                            CrawlerThread(binarySemaphore, url, in_queue, cond).start()
+                            MiHilo(in_queue, cond).start()
+                            
+                        #while True:
+                         #   empty = in_queue.empty()
+                          #  if not in_queue.empty():
+                          #      print("Sacando----------------->")
+                          #      print(in_queue.get())
+                          #  time.sleep(5)     
+
                         print "URl: %s" % ing_url
 			self.send_response(200)
 			self.end_headers()
