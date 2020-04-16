@@ -9,7 +9,7 @@ try:
         server = HTTPServer(('', PORT_NUMBER), myHandler)
         #server.do_GET("index.html")
         #server.do_POST("/send")
-        print 'Started httpserver on port ' , PORT_NUMBER
+        print ('Started httpserver on port ' , PORT_NUMBER)
 
         #Wait forever for incoming htto requests
         server.serve_forever()
