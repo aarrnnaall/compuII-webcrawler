@@ -23,10 +23,9 @@ class LinkHTMLParser(HTMLParser):
 
 
 class CrawlerThread(threading.Thread):
-    def __init__(self, binarySemaphore, url, crawlDepth):
+    def __init__(self, binarySemaphore, url):
         self.binarySemaphore = binarySemaphore
         self.url = url
-        self.crawlDepth = crawlDepth
         self.threadId = hash(self)
         threading.Thread.__init__(self)
 
@@ -45,16 +44,4 @@ class CrawlerThread(threading.Thread):
             print "\t" + link
         print ""
         self.binarySemaphore.release()
-        for url in urls:
-            # Keep crawling to different urls until the crawl depth is less than 1
-            if self.crawlDepth > 1:
-                CrawlerThread(binarySemaphore, url, self.crawlDepth - 1).start()
 
-
-if __name__ == "__main__":
-    binarySemaphore = threading.Semaphore(1)
-    urls = [("http://www.google.com", 1), ("http://www.twitter.com", 2), ("http://www.facebook.com", 1),
-            ("http://www.cnn.com", 1),
-            ("http://www.nyt.com", 1), ("http://www.schwab.com", 1), ("http://www.bankofamerica.com", 1)]
-    for (url, crawlDepth) in urls:
-        CrawlerThread(binarySemaphore, url, crawlDepth).start()
