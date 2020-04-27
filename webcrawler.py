@@ -28,7 +28,7 @@ class CrawlerThread(threading.Thread):
       	  self.binarySemaphore = binarySemaphore
 	  self.url = url
 	  self.in_queue = in_queue
-          self.cond = cond
+     self.cond = cond
           threading.Thread.__init__(self)
 
       def run(self):
