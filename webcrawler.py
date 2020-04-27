@@ -24,12 +24,16 @@ class LinkHTMLParser(HTMLParser):
 
 
 class CrawlerThread(threading.Thread):
-      def __init__(self, binarySemaphore, url, in_queue,cond):
+      def __init__(self, binarySemaphore, url):
       	  self.binarySemaphore = binarySemaphore
 	  self.url = url
+<<<<<<< HEAD
 	  self.in_queue = in_queue
      self.cond = cond
           threading.Thread.__init__(self)
+=======
+	  threading.Thread.__init__(self)
+>>>>>>> b44abd487479bf84f45144ec501e87e33e6fa23e
 
       def run(self):
       	  """Print out all of the links on the given url associated with this particular thread. Grab the passed in 
@@ -42,22 +46,18 @@ class CrawlerThread(threading.Thread):
 	  linkHTMLParser.feed(urlMarkUp)
       	  self.binarySemaphore.acquire() # wait if another thread has acquired and not yet released binary semaphore
 	  print (self.getName())
-          print "Url %s" %(self.url)
-      	  #print "Retreived the following links..." %(self.threadId)
+          print ("Url %s" %self.url)
+           #print "Retreived the following links..." %(self.threadId)
 	  urls = []
-	  #archivo=open('cont.txt','a')
+	  archivo=open('cont.txt','a')
           for link in linkHTMLParser.links:
 	      link = urlparse.urljoin(self.url, link)
 	      urls.append(link)
-      	  #in_queue =  Queue.Queue()
           url_sinrep=[]
-          print("Escribiendo en la Cola...")
           for elemento in urls:
               if not elemento in url_sinrep:
                   url_sinrep.append(elemento)
-          #self.cond.acquire()
           for url_most in url_sinrep:
-              #print "\t"+url_most
               req = requests.get(url_most)
               soup = BeautifulSoup(req.text, "lxml")
               try: 
@@ -67,16 +67,6 @@ class CrawlerThread(threading.Thread):
                  pass
               if title == "400":
                  title = ""
-              self.cond.acquire()
-              if self.in_queue.empty():
-                 self.in_queue.put(url_most +" "+ title)
-                 print("Metiendo--> "+ url_most +" "+ title)
-              #else:
-              #   print("Esperando Hilo Metiendo")
-              #   self.cond.wait(2)
-              self.cond.notify()
-              self.cond.release()
-          self.in_queue.put(" ")
-          #self.cond.notify()
-          #self.cond.release()
-          self.binarySemaphore.release()	     	 
+              archivo.write(url_most +" "+ title+"\n")
+              print('PARSEADO')    
+              self.binarySemaphore.release()	     	 

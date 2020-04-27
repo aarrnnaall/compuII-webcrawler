@@ -60,20 +60,10 @@ class myHandler(BaseHTTPRequestHandler):
                         ing_url = form["url"].value
                         urls=ing_url.split()
                         binarySemaphore = threading.Semaphore(1)
-                        in_queue = Queue.Queue()
-                        cond = threading.Condition()
                         for url in urls:
-                            CrawlerThread(binarySemaphore, url, in_queue, cond).start()
-                            MiHilo(in_queue, cond).start()
+                            CrawlerThread(binarySemaphore, url).start()
                             
-                        #while True:
-                         #   empty = in_queue.empty()
-                          #  if not in_queue.empty():
-                          #      print("Sacando----------------->")
-                          #      print(in_queue.get())
-                          #  time.sleep(5)     
-
-                        print "URl: %s" % ing_url
+                        print ("URl: %s" % ing_url)
 			self.send_response(200)
 			self.end_headers()
                         self.wfile.write("Thanks for this URL: %s " % ing_url)
@@ -90,7 +80,7 @@ class myHandler(BaseHTTPRequestHandler):
                         hMiHilo = MiHilocons(nom_const)
                         hMiHilo.start()
 
-                        print "Buscado: %s" % nom_const
+                        print ("Buscado: %s" % nom_const)
                         self.send_response(200)
                         self.end_headers()
                         self.wfile.write("Thanks for this Search: %s " % nom_const)
