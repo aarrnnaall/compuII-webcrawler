@@ -12,7 +12,6 @@ class LinkHTMLParser(HTMLParser):
         HTMLParser.__init__(self)
 
     def handle_starttag(self, tag, attrs):
-        """Add all 'href' links within 'a' tags to self.links"""
         if cmp(tag, self.A_TAG) == 0:
             for (key, value) in attrs:
                 if cmp(key, self.HREF_ATTRIBUTE) == 0:
@@ -23,19 +22,16 @@ class LinkHTMLParser(HTMLParser):
 
 
 class CrawlerThread(threading.Thread):
-    def __init__(self, binarySemaphore, url):
-        self.binarySemaphore = binarySemaphore
+    def __init__(self, url):
         self.url = url
         self.threadId = hash(self)
         threading.Thread.__init__(self)
 
     def run(self):
-
         socket = urllib.urlopen(self.url)
         urlMarkUp = socket.read()
         linkHTMLParser = LinkHTMLParser()
         linkHTMLParser.feed(urlMarkUp)
-        #self.binarySemaphore.acquire()  # wait if another thread has acquired and not yet released binary semaphore
         print (self.getName())
         urlsin=self.url.split('/')
         archivo = open(urlsin[2]+".txt" , 'a' )
@@ -43,8 +39,6 @@ class CrawlerThread(threading.Thread):
         for link in linkHTMLParser.links:
             link = urlparse.urljoin(self.url, link)
             urls.append(link)
-            print "\t" + link
+            print ("\t" + link)
             archivo.write(link +"\n")
-        print ""
-        #self.binarySemaphore.release()
 

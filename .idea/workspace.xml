@@ -20,12 +20,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43794d6c-9718-4f1a-a204-5d59d0701678" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www.ucongreso.edu.ar.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/www.uda.edu.ar.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/www.um.edu.ar.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/www.umaza.edu.ar.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/www.uncuyo.edu.ar.txt" beforeDir="false" />
+=======
+<<<<<<< HEAD
+      <change afterPath="$PROJECT_DIR$/crawler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webcrawler.py" beforeDir="false" afterPath="$PROJECT_DIR$/webcrawler.py" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/www.ucongreso.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.uda.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.um.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.umaza.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.uncuyo.edu.ar.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler.py" afterDir="false" />
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
+>>>>>>> daa8efe68e5b4f2d7bcce3c0678cf551bcdb9bb4
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,39 +56,65 @@
     <ignored-facets>
       <facet id="Webcrawler/invalid/Python" />
     </ignored-facets>
+<<<<<<< HEAD
+  </component>
+  <component name="ProjectId" id="1axpyQvdAKEh4pM8FX0bZHKD7vR" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+=======
   </component>
   <component name="ProjectId" id="1b8g8czZLudyecjzXkf0ROsUxCu" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+<<<<<<< HEAD
+=======
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+<<<<<<< HEAD
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+=======
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="crawler" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
       <module name="Webcrawler" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
+<<<<<<< HEAD
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+=======
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crawler.py" />
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -80,19 +123,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+<<<<<<< HEAD
+    <configuration name="crawler" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+=======
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
       <module name="Webcrawler" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
+<<<<<<< HEAD
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crawler.py" />
+=======
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -103,7 +159,10 @@
     </configuration>
     <recent_temporary>
       <list>
+<<<<<<< HEAD
+=======
         <item itemvalue="Python.main" />
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
         <item itemvalue="Python.crawler" />
       </list>
     </recent_temporary>
@@ -144,6 +203,41 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+<<<<<<< HEAD
+  <component name="WindowStateProjectService">
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587763258357">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1299.741@67.27.1299.741" timestamp="1587763258357" />
+    <state x="378" y="27" width="666" height="741" key="#crawler" timestamp="1587687569907">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="378" y="27" width="666" height="741" key="#crawler/67.27.1299.741@67.27.1299.741" timestamp="1587687569907" />
+    <state x="556" y="138" width="309" height="516" key="EnvironmentVariablesDialog" timestamp="1587763100362">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="556" y="138" width="309" height="516" key="EnvironmentVariablesDialog/67.27.1299.741@67.27.1299.741" timestamp="1587763100362" />
+    <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl" timestamp="1587763226904">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1587763226904" />
+    <state width="1276" height="175" key="GridCell.Tab.0.bottom" timestamp="1587763646642">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1276" height="175" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1587763646642" />
+    <state width="1276" height="175" key="GridCell.Tab.0.center" timestamp="1587763646642">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1276" height="175" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1587763646642" />
+    <state width="1276" height="175" key="GridCell.Tab.0.left" timestamp="1587763646642">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1276" height="175" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1587763646642" />
+    <state width="1276" height="175" key="GridCell.Tab.0.right" timestamp="1587763646642">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1276" height="175" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1587763646642" />
+=======
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
@@ -168,5 +262,6 @@
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
     <state width="1590" height="269" key="GridCell.Tab.0.right/67.27.1613.1023@67.27.1613.1023" timestamp="1588034977525" />
+>>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
   </component>
 </project>

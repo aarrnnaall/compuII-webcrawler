@@ -45,7 +45,6 @@ class myHandler(BaseHTTPRequestHandler):
 
         except IOError:
             self.send_error(404, 'File Not Found: %s' % self.path)
-
     # Handler for the POST requests
     def do_POST(self):
         if self.path == "/sendurl":
@@ -57,9 +56,8 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             ing_url = form["url"].value
             urls = ing_url.split()
-            binarySemaphore = threading.Semaphore(1)
             for url in urls:
-                CrawlerThread(binarySemaphore, url).start()
+                CrawlerThread(url).start()
 
             print ("URl: %s" % ing_url)
             self.send_response(200)
