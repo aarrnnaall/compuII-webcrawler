@@ -20,24 +20,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43794d6c-9718-4f1a-a204-5d59d0701678" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/www.ucongreso.edu.ar.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www.uda.edu.ar.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www.um.edu.ar.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www.umaza.edu.ar.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www.uncuyo.edu.ar.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crawler.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www.ucongreso.edu.ar.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www.uda.edu.ar.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www.um.edu.ar.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www.umaza.edu.ar.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www.uncuyo.edu.ar.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>web</find>
-      <find>index</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
