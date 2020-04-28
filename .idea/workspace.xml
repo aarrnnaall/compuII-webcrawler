@@ -20,10 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43794d6c-9718-4f1a-a204-5d59d0701678" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/www.ucongreso.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.uda.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.um.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.umaza.edu.ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www.uncuyo.edu.ar.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crawler.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webcrawler.py" beforeDir="false" afterPath="$PROJECT_DIR$/webcrawler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +63,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="crawler" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -145,6 +149,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -154,21 +159,21 @@
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
     <state x="331" y="195" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1613.1023@67.27.1613.1023" timestamp="1588019626011" />
-    <state width="1590" height="269" key="GridCell.Tab.0.bottom" timestamp="1588019778367">
+    <state width="1590" height="269" key="GridCell.Tab.0.bottom" timestamp="1588034977526">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state width="1590" height="269" key="GridCell.Tab.0.bottom/67.27.1613.1023@67.27.1613.1023" timestamp="1588019778367" />
-    <state width="1590" height="269" key="GridCell.Tab.0.center" timestamp="1588019778366">
+    <state width="1590" height="269" key="GridCell.Tab.0.bottom/67.27.1613.1023@67.27.1613.1023" timestamp="1588034977526" />
+    <state width="1590" height="269" key="GridCell.Tab.0.center" timestamp="1588034977525">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state width="1590" height="269" key="GridCell.Tab.0.center/67.27.1613.1023@67.27.1613.1023" timestamp="1588019778366" />
-    <state width="1590" height="269" key="GridCell.Tab.0.left" timestamp="1588019778365">
+    <state width="1590" height="269" key="GridCell.Tab.0.center/67.27.1613.1023@67.27.1613.1023" timestamp="1588034977525" />
+    <state width="1590" height="269" key="GridCell.Tab.0.left" timestamp="1588034977525">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state width="1590" height="269" key="GridCell.Tab.0.left/67.27.1613.1023@67.27.1613.1023" timestamp="1588019778365" />
-    <state width="1590" height="269" key="GridCell.Tab.0.right" timestamp="1588019778366">
+    <state width="1590" height="269" key="GridCell.Tab.0.left/67.27.1613.1023@67.27.1613.1023" timestamp="1588034977525" />
+    <state width="1590" height="269" key="GridCell.Tab.0.right" timestamp="1588034977525">
       <screen x="67" y="27" width="1613" height="1023" />
     </state>
-    <state width="1590" height="269" key="GridCell.Tab.0.right/67.27.1613.1023@67.27.1613.1023" timestamp="1588019778366" />
+    <state width="1590" height="269" key="GridCell.Tab.0.right/67.27.1613.1023@67.27.1613.1023" timestamp="1588034977525" />
   </component>
 </project>

@@ -35,13 +35,16 @@ class CrawlerThread(threading.Thread):
         urlMarkUp = socket.read()
         linkHTMLParser = LinkHTMLParser()
         linkHTMLParser.feed(urlMarkUp)
-        self.binarySemaphore.acquire()  # wait if another thread has acquired and not yet released binary semaphore
+        #self.binarySemaphore.acquire()  # wait if another thread has acquired and not yet released binary semaphore
         print (self.getName())
+        urlsin=self.url.split('/')
+        archivo = open(urlsin[2]+".txt" , 'a' )
         urls = []
         for link in linkHTMLParser.links:
             link = urlparse.urljoin(self.url, link)
             urls.append(link)
             print "\t" + link
+            archivo.write(link +"\n")
         print ""
-        self.binarySemaphore.release()
+        #self.binarySemaphore.release()
 
