@@ -59,7 +59,7 @@ class myHandler(BaseHTTPRequestHandler):
 			})
                         ing_url = form["url"].value
                         urls=ing_url.split()
-                        binarySemaphore = threading.Semaphore(1)
+                        binarySemaphore = threading.Semaphore(2)
                         for url in urls:
                             CrawlerThread(binarySemaphore, url).start()
                             

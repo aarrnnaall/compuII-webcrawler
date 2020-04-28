@@ -38,7 +38,7 @@ class CrawlerThread(threading.Thread):
 	  urlMarkUp = socket.read()
 	  linkHTMLParser = LinkHTMLParser()
 	  linkHTMLParser.feed(urlMarkUp)
-      	  self.binarySemaphore.acquire() # wait if another thread has acquired and not yet released binary semaphore
+      	  #self.binarySemaphore.acquire() # wait if another thread has acquired and not yet released binary semaphore
 	  print (self.getName())
           print ("Url %s" %self.url)
            #print "Retreived the following links..." %(self.threadId)
@@ -62,5 +62,5 @@ class CrawlerThread(threading.Thread):
               if title == "400":
                  title = ""
               archivo.write(url_most +" "+ title+"\n")
-              print('PARSEADO')    
-              self.binarySemaphore.release()	     	 
+              print(url_most +" "+ title)    
+              #self.binarySemaphore.release()	     	 
