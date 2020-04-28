@@ -45,40 +45,6 @@ class myHandler(BaseHTTPRequestHandler):
 
         except IOError:
             self.send_error(404, 'File Not Found: %s' % self.path)
-
-<<<<<<< HEAD
-	#Handler for the POST requests
-	def do_POST(self):
-                if self.path=="/sendurl":
-			form = cgi.FieldStorage(
-				fp=self.rfile, 
-				headers=self.headers,
-				environ={'REQUEST_METHOD':'POST',
-		                 'CONTENT_TYPE':self.headers['Content-Type'],
-			})
-                        ing_url = form["url"].value
-                        urls=ing_url.split()
-                        binarySemaphore = threading.Semaphore(2)
-                        for url in urls:
-                            CrawlerThread(binarySemaphore, url).start()
-                            
-                        print ("URl: %s" % ing_url)
-			self.send_response(200)
-			self.end_headers()
-                        self.wfile.write("Thanks for this URL: %s " % ing_url)
-			return 		
-			
-                if self.path=="/sendconsulta":
-                        form = cgi.FieldStorage(
-                                fp=self.rfile,
-                                headers=self.headers,
-                                environ={'REQUEST_METHOD':'POST',
-                                 'CONTENT_TYPE':self.headers['Content-Type'],
-                        })
-                        nom_const = form["consulta"].value
-                        hMiHilo = MiHilocons(nom_const)
-                        hMiHilo.start()
-=======
     # Handler for the POST requests
     def do_POST(self):
         if self.path == "/sendurl":
@@ -90,10 +56,8 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             ing_url = form["url"].value
             urls = ing_url.split()
-            binarySemaphore = threading.Semaphore(1)
             for url in urls:
-                CrawlerThread(binarySemaphore, url).start()
->>>>>>> 11f1c3bede76edb13378e2376de5691b5709e411
+                CrawlerThread(url).start()
 
             print ("URl: %s" % ing_url)
             self.send_response(200)
