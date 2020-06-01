@@ -2,7 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
 from crawler import CrawlerThread
 import cgi
-from hiloconsulta import MiHilocons
+from consulta import MiHilocons
 import threading
 
 
