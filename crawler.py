@@ -1,7 +1,7 @@
 import threading, urllib, urlparse
 from HTMLParser import HTMLParser
 import sys
-
+import fileinput
 
 class LinkHTMLParser(HTMLParser):
     A_TAG = "a"
@@ -22,8 +22,9 @@ class LinkHTMLParser(HTMLParser):
 
 
 class CrawlerThread(threading.Thread):
-    def __init__(self, url):
+    def __init__(self, url,cond):
         self.url = url
+        self.cond=cond
         self.threadId = hash(self)
         threading.Thread.__init__(self)
 
@@ -34,11 +35,18 @@ class CrawlerThread(threading.Thread):
         linkHTMLParser.feed(urlMarkUp)
         print (self.getName())
         urlsin=self.url.split('/')
-        archivo = open(urlsin[2]+".txt" , 'a' )
+        archivomod = open(urlsin[2]+".txt" , 'a' )
+        archivoleer = open(urlsin[2] + ".txt", 'r')
+        contenido = archivoleer.read()
         urls = []
+        self.cond.acquire()
         for link in linkHTMLParser.links:
             link = urlparse.urljoin(self.url, link)
             urls.append(link)
-            print ("\t" + link)
-            archivo.write(link +"\n")
-
+            if contenido == '':
+                print("\t" + link)
+                archivomod.write(link + "\n")
+        if contenido != '':
+            print("Ya cargado!")
+        self.cond.notify()
+        self.cond.release()

@@ -4,7 +4,7 @@ from crawler import CrawlerThread
 import cgi
 from consulta import MiHilocons
 import threading
-
+cond=threading.Condition()
 
 class myHandler(BaseHTTPRequestHandler):
 
@@ -46,6 +46,7 @@ class myHandler(BaseHTTPRequestHandler):
         except IOError:
             self.send_error(404, 'File Not Found: %s' % self.path)
     # Handler for the POST requests
+
     def do_POST(self):
         if self.path == "/sendurl":
             form = cgi.FieldStorage(
@@ -57,8 +58,8 @@ class myHandler(BaseHTTPRequestHandler):
             ing_url = form["url"].value
             urls = ing_url.split()
             for url in urls:
-                CrawlerThread(url).start()
-
+                crawler=CrawlerThread(url,cond)
+                crawler.start()
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
@@ -73,9 +74,8 @@ class myHandler(BaseHTTPRequestHandler):
                          'CONTENT_TYPE': self.headers['Content-Type'],
                          })
             nom_const = form["consulta"].value
-            hMiHilo = MiHilocons(nom_const)
+            hMiHilo = MiHilocons(nom_const,cond)
             hMiHilo.start()
-
             print ("Buscado: %s" % nom_const)
             self.send_response(200)
             self.end_headers()
