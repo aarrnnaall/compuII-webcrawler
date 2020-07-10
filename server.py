@@ -1,9 +1,10 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
-from crawler import CrawlerThread
+from crawler import Crawler
 import cgi
 from consulta import MiHilocons
 import threading
+from multiprocessing import Process, Queue
 cond=threading.Condition()
 
 class myHandler(BaseHTTPRequestHandler):
@@ -58,8 +59,10 @@ class myHandler(BaseHTTPRequestHandler):
             ing_url = form["url"].value
             urls = ing_url.split()
             for url in urls:
-                crawler=CrawlerThread(url,cond)
-                crawler.start()
+                p = Process(target=Crawler(url,cond).crawler())
+                p.start()
+                p.join
+
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()

@@ -21,19 +21,16 @@ class LinkHTMLParser(HTMLParser):
         pass
 
 
-class CrawlerThread(threading.Thread):
+class Crawler():
     def __init__(self, url,cond):
         self.url = url
         self.cond=cond
-        self.threadId = hash(self)
-        threading.Thread.__init__(self)
 
-    def run(self):
+    def crawler(self):
         socket = urllib.urlopen(self.url)
         urlMarkUp = socket.read()
         linkHTMLParser = LinkHTMLParser()
         linkHTMLParser.feed(urlMarkUp)
-        print (self.getName())
         urlsin=self.url.split('/')
         archivomod = open(urlsin[2]+".txt" , 'a' )
         archivoleer = open(urlsin[2] + ".txt", 'r')
