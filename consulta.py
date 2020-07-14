@@ -6,15 +6,13 @@ import fileinput
 import sys
 import time
 
-class MiHilocons(threading.Thread):
+class Consulta(threading.Thread):
 
     def __init__(self, palabra,cond):
-        threading.Thread.__init__(self)
         self.cond= cond
         self.palabra = palabra
-        print(self.getName())
 
-    def consult(self):
+    def buscar(self):
         link = glob('*.txt')
         if(link):
              input = fileinput.input(link)
@@ -27,8 +25,8 @@ class MiHilocons(threading.Thread):
         else:
              return False
 
-    def run(self):
-        if(self.consult()==False):
+    def consulta(self):
+        if(self.buscar()==False):
             print("Esperando que se carge")
             self.cond.acquire()
             self.cond.wait()

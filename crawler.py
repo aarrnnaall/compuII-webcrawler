@@ -22,9 +22,10 @@ class LinkHTMLParser(HTMLParser):
 
 
 class Crawler():
-    def __init__(self, url,cond):
+    def __init__(self, url,cond,cola):
         self.url = url
         self.cond=cond
+        self.cola=cola
 
     def crawler(self):
         socket = urllib.urlopen(self.url)
@@ -40,6 +41,7 @@ class Crawler():
         for link in linkHTMLParser.links:
             link = urlparse.urljoin(self.url, link)
             urls.append(link)
+            self.cola.put(link)
             if contenido == '':
                 print("\t" + link)
                 archivomod.write(link + "\n")

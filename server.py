@@ -1,8 +1,9 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
 from crawler import Crawler
+from imagen import Imagen
 import cgi
-from consulta import MiHilocons
+from consulta import Consulta
 import threading
 from multiprocessing import Process, Queue
 cond=threading.Condition()
@@ -58,10 +59,17 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             ing_url = form["url"].value
             urls = ing_url.split()
+
             for url in urls:
-                p = Process(target=Crawler(url,cond).crawler())
+                q = Queue()
+                p = Process(target=Crawler(url,cond,q).crawler())
                 p.start()
                 p.join
+                i = Process(target=Imagen(q.get()).imagen())
+                i.start()
+                i.join
+
+
 
             print ("URl: %s" % ing_url)
             self.send_response(200)
@@ -77,8 +85,9 @@ class myHandler(BaseHTTPRequestHandler):
                          'CONTENT_TYPE': self.headers['Content-Type'],
                          })
             nom_const = form["consulta"].value
-            hMiHilo = MiHilocons(nom_const,cond)
-            hMiHilo.start()
+            p = Process(target=Consulta(nom_const, cond).consulta())
+            p.start()
+            p.join
             print ("Buscado: %s" % nom_const)
             self.send_response(200)
             self.end_headers()
