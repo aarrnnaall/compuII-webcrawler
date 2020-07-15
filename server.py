@@ -6,6 +6,8 @@ import cgi
 from consulta import Consulta
 import threading
 from multiprocessing import Process, Queue
+import sys
+import fileinput
 cond=threading.Condition()
 
 class myHandler(BaseHTTPRequestHandler):
@@ -85,11 +87,22 @@ class myHandler(BaseHTTPRequestHandler):
                          'CONTENT_TYPE': self.headers['Content-Type'],
                          })
             nom_const = form["consulta"].value
-            p = Process(target=Consulta(nom_const, cond).consulta())
+            urls = []
+            p = Process(target=Consulta(nom_const, cond,urls).consulta())
             p.start()
             p.join
             print ("Buscado: %s" % nom_const)
             self.send_response(200)
             self.end_headers()
-            self.wfile.write("Thanks for this Search: %s " % nom_const)
+            archivoleer = open("resultado.html", 'r')
+            html = archivoleer.read()
+            self.wfile.write("%s " % html)
+            if(urls):
+                for linea in urls:
+                    self.wfile.write("<a href= %s"% linea+">%s"% linea+"</a>" )
+                    self.wfile.write("<br><br>")
+            else:
+                self.wfile.write("<h2>No hay resultados<h2>")
+
+            #self.wfile.write("Thanks for this Search: %s " % nom_const)
             return
