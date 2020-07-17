@@ -67,7 +67,7 @@ class myHandler(BaseHTTPRequestHandler):
                 p = Process(target=Crawler(url,cond,q).crawler())
                 p.start()
                 p.join
-                i = Process(target=Imagen(q.get()).imagen())
+                i = Process(target=Imagen(q.get(),url).imagen())
                 i.start()
                 i.join
 
@@ -76,7 +76,14 @@ class myHandler(BaseHTTPRequestHandler):
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
-            self.wfile.write("Thanks for this URL: %s " % ing_url)
+            archivoleer = open("resultado.html", 'r')
+            html = archivoleer.read()
+            self.wfile.write("%s " % html)
+            #input = fileinput.input(link)
+            #for linea in input:
+            for url in urls:
+                self.wfile.write("<h1> %s " %url+"<h1>")
+                self.wfile.write("<br>")
             return
 
         if self.path == "/sendconsulta":

@@ -1,7 +1,7 @@
 from server import myHandler
 from BaseHTTPServer import HTTPServer
 
-PORT_NUMBER = 8080
+PORT_NUMBER = 8081
 
 try:
         #Create a web server and define the handler to manage the

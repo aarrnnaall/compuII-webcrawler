@@ -2,7 +2,7 @@ import threading, urllib, urlparse
 from HTMLParser import HTMLParser
 import sys
 import fileinput
-
+import os
 class LinkHTMLParser(HTMLParser):
     A_TAG = "a"
     HREF_ATTRIBUTE = "href"
@@ -33,8 +33,14 @@ class Crawler():
         linkHTMLParser = LinkHTMLParser()
         linkHTMLParser.feed(urlMarkUp)
         urlsin=self.url.split('/')
-        archivomod = open(urlsin[2]+".txt" , 'a' )
-        archivoleer = open(urlsin[2] + ".txt", 'r')
+        dir = self.url.split("//")[1]
+        try:
+            os.stat(dir.split("/")[0])
+        except:
+            os.mkdir(dir.split("/")[0])
+
+        archivomod = open(dir.split("/")[0]+"/"+"url."+urlsin[2]+".txt" , 'a' )
+        archivoleer = open(dir.split("/")[0]+"/"+"url."+urlsin[2] + ".txt", 'r')
         contenido = archivoleer.read()
         urls = []
         self.cond.acquire()
