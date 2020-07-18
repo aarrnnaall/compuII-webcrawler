@@ -9,6 +9,8 @@ class Imagen():
     def __init__(self, url,direc):
         self.url=url
         self.direc=direc
+  
+
 
     def imagen(self):
         print("Cargando Imagenes....")
@@ -26,17 +28,22 @@ class Imagen():
             links.append(image['src'])
         for elem in links:
             try:
+                print(elem.split("http://")[1])
                 url_imagen = elem  # El link de la imagen
-                nombre_local_imagen = dir.split("/")[0]+"/"+elem.split("/")[len(elem.split("/"))-1]  # El nombre con el que queremos guardarla
-                imagen = requests.get(url_imagen).content
-                with open(nombre_local_imagen, 'wb') as handler:
-                    handler.write(imagen)
-                break
-            except:
-                url_imagen = self.direc+elem  # El link de la imagen
+                print(url_imagen);
                 nombre_local_imagen = dir.split("/")[0] + "/" + elem.split("/")[
                     len(elem.split("/")) - 1]  # El nombre con el que queremos guardarla
                 imagen = requests.get(url_imagen).content
                 with open(nombre_local_imagen, 'wb') as handler:
                     handler.write(imagen)
-print("Realizado Imagen!")
+
+            except(IndexError):
+                url_imagen = self.direc + elem  # El link de la imagen
+                print(url_imagen);
+                nombre_local_imagen = dir.split("/")[0] + "/" + elem.split("/")[
+                    len(elem.split("/")) - 1]  # El nombre con el que queremos guardarla
+                imagen = requests.get(url_imagen).content
+                with open(nombre_local_imagen, 'wb') as handler:
+                    handler.write(imagen)
+
+    print("Realizado Imagen!")
