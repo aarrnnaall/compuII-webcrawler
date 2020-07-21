@@ -8,9 +8,10 @@ import time
 
 class Consulta(threading.Thread):
 
-    def __init__(self, palabra,array):
+    def __init__(self, palabra,array,cond):
         self.palabra = palabra
         self.array = array
+        self.cond=cond
 
     def buscar(self):
         link = glob('*/*.txt')
@@ -30,4 +31,9 @@ class Consulta(threading.Thread):
         if self.buscar():
             print("Encontro")
         else:
-            print("No hay resultado")
+            print("Esperando que se carge")
+            self.cond.acquire()
+            self.cond.wait()
+            self.buscar()
+            self.cond.release()
+            print("Ya cargado")

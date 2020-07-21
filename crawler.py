@@ -22,15 +22,18 @@ class LinkHTMLParser(HTMLParser):
 
 
 class Crawler():
-    def __init__(self, url,cola):
+    def __init__(self, url,cola,cond):
         self.url = url
         self.cola=cola
+        self.cond=cond
 
     def crawler(self):
         socket = urllib.urlopen(self.url)
         urlMarkUp = socket.read()
         linkHTMLParser = LinkHTMLParser()
         linkHTMLParser.feed(urlMarkUp)
+        self.cond.acquire()
+        print("Empezando Crawler")
         urlsin=self.url.split('/')
         dir = self.url.split("//")[1]
         try:
@@ -42,6 +45,7 @@ class Crawler():
         archivoleer = open(dir.split("/")[0]+"/"+"url."+urlsin[2] + ".txt", 'r')
         contenido = archivoleer.read()
         urls = []
+
         for link in linkHTMLParser.links:
             link = urlparse.urljoin(self.url, link)
             urls.append(link)
@@ -51,3 +55,5 @@ class Crawler():
                 archivomod.write(link + "\n")
         if contenido != '':
             print("Ya cargado!")
+        self.cond.notify()
+        self.cond.release()

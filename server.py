@@ -10,7 +10,7 @@ import sys
 import threading
 import fileinput
 import os
-
+cond=threading.Condition()
 class myHandler(BaseHTTPRequestHandler):
 
     # Handler for the GET requests
@@ -64,7 +64,7 @@ class myHandler(BaseHTTPRequestHandler):
             urls = ing_url.split()
             q = Queue()
             for url in urls:
-                u = threading.Thread(target=Crawler(url,q).crawler())
+                u = threading.Thread(target=Crawler(url,q,cond).crawler())
                 u.start()
                 print(u)
                 print("con ID of process running: {}".format(os.getpid()))
@@ -93,7 +93,7 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             nom_const = form["consulta"].value
             urls_buscar = []
-            c = threading.Thread(target=Consulta(nom_const,urls_buscar).consulta())
+            c = threading.Thread(target=Consulta(nom_const,urls_buscar,cond).consulta())
             c.start()
             print(c)
             print("con ID of process running: {}".format(os.getpid()))
