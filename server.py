@@ -8,7 +8,7 @@ import threading
 from multiprocessing import Process, Queue
 import sys
 import fileinput
-cond=threading.Condition()
+
 
 class myHandler(BaseHTTPRequestHandler):
 
@@ -64,23 +64,22 @@ class myHandler(BaseHTTPRequestHandler):
 
             for url in urls:
                 q = Queue()
-                p = Process(target=Crawler(url,cond,q).crawler())
-                p.start()
-                p.join
+                u = Process(target=Crawler(url,q).crawler(),args=())
+                u.start()
+                u.join()
                 i = Process(target=Imagen(q.get(),url).imagen())
                 i.start()
                 i.join
-
-
-
+                print("Process URL-> ")
+                print(u)
+                print("Process IMG-> ")
+                print(i)
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
             archivoleer = open("resultado.html", 'r')
             html = archivoleer.read()
             self.wfile.write("%s " % html)
-            #input = fileinput.input(link)
-            #for linea in input:
             for url in urls:
                 self.wfile.write("<h1> %s " %url+"<h1>")
                 self.wfile.write("<br>")
@@ -95,9 +94,11 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             nom_const = form["consulta"].value
             urls = []
-            p = Process(target=Consulta(nom_const, cond,urls).consulta())
-            p.start()
-            p.join
+            c = Process(target=Consulta(nom_const,urls).consulta())
+            c.start()
+            c.join
+            print("Process CONSUL-> ")
+            print(c)
             print ("Buscado: %s" % nom_const)
             self.send_response(200)
             self.end_headers()
@@ -111,5 +112,5 @@ class myHandler(BaseHTTPRequestHandler):
             else:
                 self.wfile.write("<h2>No hay resultados<h2>")
 
-            #self.wfile.write("Thanks for this Search: %s " % nom_const)
+            
             return

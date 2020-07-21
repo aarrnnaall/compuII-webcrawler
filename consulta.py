@@ -8,13 +8,12 @@ import time
 
 class Consulta(threading.Thread):
 
-    def __init__(self, palabra,cond,array):
-        self.cond= cond
+    def __init__(self, palabra,array):
         self.palabra = palabra
         self.array = array
 
     def buscar(self):
-        link = glob('*.txt')
+        link = glob('*/*.txt')
         if(link):
              input = fileinput.input(link)
              for linea in input:
@@ -29,10 +28,7 @@ class Consulta(threading.Thread):
 
     def consulta(self):
         if(self.buscar()==False):
-            print("Esperando que se carge")
-            self.cond.acquire()
-            self.cond.wait()
-            self.consult()
-            self.cond.release()
-            print("Ya cargado!")
-
+            print("No hay resultado")
+            self.buscar()
+        else:
+            self.buscar()
