@@ -7,7 +7,9 @@ from consulta import Consulta
 import threading
 from multiprocessing import Process, Queue
 import sys
+import threading
 import fileinput
+import os
 
 
 class myHandler(BaseHTTPRequestHandler):
@@ -64,16 +66,15 @@ class myHandler(BaseHTTPRequestHandler):
 
             for url in urls:
                 q = Queue()
-                u = Process(target=Crawler(url,q).crawler(),args=())
+                u = threading.Thread(target=Crawler(url,q).crawler())
+                i = threading.Thread(target=Imagen(q.get(),url).imagen())
                 u.start()
-                u.join()
-                i = Process(target=Imagen(q.get(),url).imagen())
                 i.start()
-                i.join
-                print("Process URL-> ")
                 print(u)
-                print("Process IMG-> ")
                 print(i)
+                print("con ID of process running: {}".format(os.getpid()))
+                #u.join()
+                #i.join()
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
@@ -94,11 +95,10 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             nom_const = form["consulta"].value
             urls = []
-            c = Process(target=Consulta(nom_const,urls).consulta())
+            c = threading.Thread(target=Consulta(nom_const,urls).consulta())
             c.start()
-            c.join
-            print("Process CONSUL-> ")
             print(c)
+            print("con ID of process running: {}".format(os.getpid()))
             print ("Buscado: %s" % nom_const)
             self.send_response(200)
             self.end_headers()
@@ -112,5 +112,5 @@ class myHandler(BaseHTTPRequestHandler):
             else:
                 self.wfile.write("<h2>No hay resultados<h2>")
 
-            
+
             return
