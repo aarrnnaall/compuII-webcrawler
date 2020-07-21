@@ -4,13 +4,12 @@ from crawler import Crawler
 from imagen import Imagen
 import cgi
 from consulta import Consulta
-import threading
+from threading import Lock, Thread
 from multiprocessing import Process, Queue
 import sys
 import threading
 import fileinput
 import os
-
 
 class myHandler(BaseHTTPRequestHandler):
 
@@ -63,18 +62,17 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             ing_url = form["url"].value
             urls = ing_url.split()
-
+            q = Queue()
             for url in urls:
-                q = Queue()
                 u = threading.Thread(target=Crawler(url,q).crawler())
-                i = threading.Thread(target=Imagen(q.get(),url).imagen())
                 u.start()
-                i.start()
                 print(u)
-                print(i)
                 print("con ID of process running: {}".format(os.getpid()))
-                #u.join()
-                #i.join()
+
+            i = Process(target=Imagen(q.get(), url).imagen())
+            i.start()
+            print(i)
+            print("con ID of process running: " + str(i.pid))
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
@@ -94,8 +92,8 @@ class myHandler(BaseHTTPRequestHandler):
                          'CONTENT_TYPE': self.headers['Content-Type'],
                          })
             nom_const = form["consulta"].value
-            urls = []
-            c = threading.Thread(target=Consulta(nom_const,urls).consulta())
+            urls_buscar = []
+            c = threading.Thread(target=Consulta(nom_const,urls_buscar).consulta())
             c.start()
             print(c)
             print("con ID of process running: {}".format(os.getpid()))
@@ -105,8 +103,8 @@ class myHandler(BaseHTTPRequestHandler):
             archivoleer = open("resultado.html", 'r')
             html = archivoleer.read()
             self.wfile.write("%s " % html)
-            if(urls):
-                for linea in urls:
+            if(urls_buscar):
+                for linea in urls_buscar:
                     self.wfile.write("<a href= %s"% linea+">%s"% linea+"</a>" )
                     self.wfile.write("<br><br>")
             else:

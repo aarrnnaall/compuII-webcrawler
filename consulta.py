@@ -27,8 +27,7 @@ class Consulta(threading.Thread):
              return False
 
     def consulta(self):
-        if(self.buscar()==False):
-            print("No hay resultado")
-            self.buscar()
+        if self.buscar():
+            print("Encontro")
         else:
-            self.buscar()
+            print("No hay resultado")
