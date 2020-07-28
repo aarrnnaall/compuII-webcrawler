@@ -75,17 +75,16 @@ class Imagen():
 
     def imagen(self):
 
-            print("Empezando Imagen")
-            if(self.cola.empty()):
-                print("Cola Vacia")
-            else:
+            #print("Empezando Imagen")
+            ##   print("Cola Vacia")
+            #else:
                 #print("Cola Llena")
-                start_time = time.time()
-                while not self.cola.empty():
-                    url = self.cola.get()
-                    Thread(url).start()
-                end_time = time.time()
-                print("Tiempo Crawler-Imagen: %s" % str(end_time - start_time))
-                print("Imagen Realizada")
+           start_time = time.time()
+           while True:
+               url = self.cola.get()
+               Thread(url).start()
+               end_time = time.time()
+           print("Tiempo Crawler-Imagen: %s" % str(end_time - start_time))
+           print("Imagen Realizada")
 
 

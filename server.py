@@ -2,7 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
 from crawler import Crawler
 import cgi
-from consulta import MiHilocons
+from consulta import consulta
 import threading
 import multiprocessing
 from imagen import Imagen
@@ -12,7 +12,7 @@ import time
 crawler_pipe, imagen_pipe = multiprocessing.Pipe()
 q = multiprocessing.Queue()
 condition = multiprocessing.Condition()
-lock = threading.Lock()
+cond=threading.Condition()
 class myHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -58,22 +58,15 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             ing_url = form["url"].value
             urls = ing_url.split()
-            lock.acquire()
-            i = multiprocessing.Process(target=Crawler(urls,q).crawler())
+            i = multiprocessing.Process(target=Crawler(urls,q,cond).crawler())
             i.start()
             print("Proceso Crawler-URL: %s" % i + "con ID: " + str(i.pid))
-            lock.release()
-            #time.sleep(2)
-            if (q.empty()):
-                print("Cola Vacia")
-            else:
-                lock.acquire()
-                i.join()
-                u = multiprocessing.Process(target=Imagen(q).imagen())
-                u.start()
-                print("Proceso Crawler-Imagen: %s" % u + "con ID: " + str(u.pid))
-                lock.release()
-                u.join()
+            #time.sleep(1)
+            u = multiprocessing.Process(target=Imagen(q).imagen())
+            u.start()
+            print("Proceso Crawler-Imagen: %s" % u + "con ID: " + str(u.pid))
+            u.join()
+            i.join()
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
@@ -88,8 +81,11 @@ class myHandler(BaseHTTPRequestHandler):
                          'CONTENT_TYPE': self.headers['Content-Type'],
                          })
             nom_const = form["consulta"].value
-            hMiHilo = MiHilocons(nom_const)
-            hMiHilo.start()
+
+            p = multiprocessing.Process(target=consulta(nom_const,cond).start())
+            p.start()
+            print("Proceso Consulta-URL: %s" % p + "con ID: " + str(p.pid))
+
             print("con ID of process running: {}".format(os.getpid()))
             print ("Buscado: %s" % nom_const)
             self.send_response(200)

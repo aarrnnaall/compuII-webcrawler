@@ -61,13 +61,17 @@ class LinkHTMLParser(HTMLParser):
         pass
 
 class Crawler(threading.Thread):
-    def __init__(self, url,cola):
+    def __init__(self, url,cola,cond):
         self.url = url
         self.cola = cola
+        self.cond=cond
 
     def crawler(self):
+        self.cond.acquire()
         start_time = time.time()
         for url in self.url:
             Thread(url,self.cola).start()
         end_time = time.time()
+        self.cond.notify()
+        self.cond.release()
         print("Tiempo Crawler-Url: %s" % str(end_time-start_time))

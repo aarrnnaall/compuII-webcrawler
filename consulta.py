@@ -6,7 +6,7 @@ import fileinput
 import sys
 import time
 import threading
-class MiHilocons(threading.Thread):
+class consulta(threading.Thread):
 
     def __init__(self, palabra,cond):
         threading.Thread.__init__(self)
