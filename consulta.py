@@ -35,4 +35,3 @@ class consulta(threading.Thread):
             self.consult()
             self.cond.release()
             print("Ya cargado!")
-

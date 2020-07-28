@@ -1,4 +1,4 @@
-from BaseHTTPServer import BaseHTTPRequestHandler
+from http.server import HTTPServer,BaseHTTPRequestHandler
 from os import curdir, sep
 from crawler import Crawler
 import cgi
@@ -8,7 +8,7 @@ import multiprocessing
 from imagen import Imagen
 import os
 import time
-
+from socketserver import ThreadingMixIn
 crawler_pipe, imagen_pipe = multiprocessing.Pipe()
 q = multiprocessing.Queue()
 condition = multiprocessing.Condition()
@@ -16,7 +16,8 @@ cond=threading.Condition()
 class myHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
-
+        thread = threading.currentThread().getName()
+        print(thread)
         try:
 
             sendReply = False
@@ -41,7 +42,7 @@ class myHandler(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', mimetype)
                 self.end_headers()
-                self.wfile.write(f.read())
+                self.wfile.write(f.read().encode(encoding='utf_8'))
                 f.close()
             return
 
@@ -49,6 +50,8 @@ class myHandler(BaseHTTPRequestHandler):
             self.send_error(404, 'File Not Found: %s' % self.path)
 
     def do_POST(self):
+        thread = threading.currentThread().getName()
+        print(thread)
         if self.path == "/sendurl":
             form = cgi.FieldStorage(
                 fp=self.rfile,
@@ -60,17 +63,17 @@ class myHandler(BaseHTTPRequestHandler):
             urls = ing_url.split()
             i = multiprocessing.Process(target=Crawler(urls,q,cond).crawler())
             i.start()
-            print("Proceso Crawler-URL: %s" % i + "con ID: " + str(i.pid))
+            print("Proceso Crawler-URL: %s " % i.name + "con ID: " + str(i.pid))
             #time.sleep(1)
             u = multiprocessing.Process(target=Imagen(q).imagen())
             u.start()
-            print("Proceso Crawler-Imagen: %s" % u + "con ID: " + str(u.pid))
+            print("Proceso Crawler-Imagen: %s " % u.name + "con ID: " + str(u.pid))
             u.join()
             i.join()
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
-            self.wfile.write("Thanks for this URL: %s " % ing_url)
+            self.wfile.write(("Thanks for this URL: %s " % ing_url).encode(encoding='utf_8'))
             return
 
         if self.path == "/sendconsulta":
@@ -84,11 +87,12 @@ class myHandler(BaseHTTPRequestHandler):
 
             p = multiprocessing.Process(target=consulta(nom_const,cond).start())
             p.start()
-            print("Proceso Consulta-URL: %s" % p + "con ID: " + str(p.pid))
-
-            print("con ID of process running: {}".format(os.getpid()))
+            print("Proceso Consulta-URL: %s " % p.name + "con ID: " + str(p.pid))
             print ("Buscado: %s" % nom_const)
             self.send_response(200)
             self.end_headers()
-            self.wfile.write("Thanks for this Search: %s " % nom_const)
+            self.wfile.write(("Thanks for this Search: %s " % nom_const).encode(encoding='utf_8'))
             return
+
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """Handle requests in a separate thread."""

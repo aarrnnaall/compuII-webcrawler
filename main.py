@@ -1,17 +1,13 @@
 from server import myHandler
-from BaseHTTPServer import HTTPServer
+from server import ThreadedHTTPServer
+from http.server import HTTPServer
 
 PORT_NUMBER = 9090
 
 try:
-        #Create a web server and define the handler to manage the
-        #incoming request
-        server = HTTPServer(('', PORT_NUMBER), myHandler)
-        #server.do_GET("index.html")
-        #server.do_POST("/send")
+        server = ThreadedHTTPServer(('', PORT_NUMBER), myHandler)
         print ('Started httpserver on port ' , PORT_NUMBER)
-
-        #Wait forever for incoming htto requests
+        print('Starting server, use <Ctrl-C> to stop')
         server.serve_forever()
 
 except KeyboardInterrupt:

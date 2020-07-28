@@ -34,7 +34,6 @@ class Thread(threading.Thread):
             except:
                 os.mkdir(dir.split("/")[0])
             try:
-                global images
                 for image in images:
                     links.append(image['src'])
             except KeyError:
@@ -75,16 +74,16 @@ class Imagen():
 
     def imagen(self):
 
-            #print("Empezando Imagen")
-            ##   print("Cola Vacia")
-            #else:
-                #print("Cola Llena")
-           start_time = time.time()
+           #start_time = time.time()
+           print("Empezando Crawler-Imagen")
            while True:
                url = self.cola.get()
+               if (url == "False"):
+                   print("Termino")
+                   break
                Thread(url).start()
-               end_time = time.time()
-           print("Tiempo Crawler-Imagen: %s" % str(end_time - start_time))
+           #end_time = time.time()
+           #print("Tiempo Crawler-Imagen: %s" % str(end_time - start_time))
            print("Imagen Realizada")
 
 
