@@ -1,25 +1,23 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
 from os import curdir, sep
 from crawler import Crawler
-from imagen import Imagen
 import cgi
-from consulta import Consulta
-from threading import Lock, Thread
-from multiprocessing import Process, Queue
-import sys
+from consulta import MiHilocons
 import threading
-import fileinput
+import multiprocessing
+from imagen import Imagen
 import os
-cond=threading.Condition()
+import time
+
+crawler_pipe, imagen_pipe = multiprocessing.Pipe()
+q = multiprocessing.Queue()
+condition = multiprocessing.Condition()
+lock = threading.Lock()
 class myHandler(BaseHTTPRequestHandler):
 
-    # Handler for the GET requests
     def do_GET(self):
-        # if self.path=="/":
 
         try:
-            # Check the file extension required and
-            # set the right mime type
 
             sendReply = False
             if self.path.endswith(".html"):
@@ -39,7 +37,6 @@ class myHandler(BaseHTTPRequestHandler):
                 sendReply = True
 
             if sendReply == True:
-                # Open the static file requested and send it
                 f = open(curdir + sep + self.path)
                 self.send_response(200)
                 self.send_header('Content-type', mimetype)
@@ -50,7 +47,6 @@ class myHandler(BaseHTTPRequestHandler):
 
         except IOError:
             self.send_error(404, 'File Not Found: %s' % self.path)
-    # Handler for the POST requests
 
     def do_POST(self):
         if self.path == "/sendurl":
@@ -62,26 +58,26 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             ing_url = form["url"].value
             urls = ing_url.split()
-            q = Queue()
-            for url in urls:
-                u = threading.Thread(target=Crawler(url,q,cond).crawler())
-                u.start()
-                print(u)
-                print("con ID of process running: {}".format(os.getpid()))
-
-            i = Process(target=Imagen(q.get(), url).imagen())
+            lock.acquire()
+            i = multiprocessing.Process(target=Crawler(urls,q).crawler())
             i.start()
-            print(i)
-            print("con ID of process running: " + str(i.pid))
+            print("Proceso Crawler-URL: %s" % i + "con ID: " + str(i.pid))
+            lock.release()
+            #time.sleep(2)
+            if (q.empty()):
+                print("Cola Vacia")
+            else:
+                lock.acquire()
+                i.join()
+                u = multiprocessing.Process(target=Imagen(q).imagen())
+                u.start()
+                print("Proceso Crawler-Imagen: %s" % u + "con ID: " + str(u.pid))
+                lock.release()
+                u.join()
             print ("URl: %s" % ing_url)
             self.send_response(200)
             self.end_headers()
-            archivoleer = open("resultado.html", 'r')
-            html = archivoleer.read()
-            self.wfile.write("%s " % html)
-            for url in urls:
-                self.wfile.write("<h1> %s " %url+"<h1>")
-                self.wfile.write("<br>")
+            self.wfile.write("Thanks for this URL: %s " % ing_url)
             return
 
         if self.path == "/sendconsulta":
@@ -92,23 +88,11 @@ class myHandler(BaseHTTPRequestHandler):
                          'CONTENT_TYPE': self.headers['Content-Type'],
                          })
             nom_const = form["consulta"].value
-            urls_buscar = []
-            c = threading.Thread(target=Consulta(nom_const,urls_buscar,cond).consulta())
-            c.start()
-            print(c)
+            hMiHilo = MiHilocons(nom_const)
+            hMiHilo.start()
             print("con ID of process running: {}".format(os.getpid()))
             print ("Buscado: %s" % nom_const)
             self.send_response(200)
             self.end_headers()
-            archivoleer = open("resultado.html", 'r')
-            html = archivoleer.read()
-            self.wfile.write("%s " % html)
-            if(urls_buscar):
-                for linea in urls_buscar:
-                    self.wfile.write("<a href= %s"% linea+">%s"% linea+"</a>" )
-                    self.wfile.write("<br><br>")
-            else:
-                self.wfile.write("<h2>No hay resultados<h2>")
-
-
+            self.wfile.write("Thanks for this Search: %s " % nom_const)
             return

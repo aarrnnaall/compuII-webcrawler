@@ -1,14 +1,10 @@
-
-from img import Img
+from crawler import CrawlerThread
+from consulta import MiHilocons
 import threading
-from multiprocessing import Process, Queue
 
 def prueba():
-
-    url = 'http://www.umaza.edu.ar/'
-
-    p = Process(target=Img(url).img())
-    p.start()
-    p.join
+    cond = threading.Condition()
+    CrawlerThread("http://www.um.edu.ar/es/",cond).start()
+    MiHilocons("um",cond).start()
 
 prueba()

@@ -5,21 +5,21 @@ from glob import glob
 import fileinput
 import sys
 import time
+import threading
+class MiHilocons(threading.Thread):
 
-class Consulta(threading.Thread):
-
-    def __init__(self, palabra,array,cond):
+    def __init__(self, palabra,cond):
+        threading.Thread.__init__(self)
+        self.cond= cond
         self.palabra = palabra
-        self.array = array
-        self.cond=cond
+        print(self.getName())
 
-    def buscar(self):
-        link = glob('*/*.txt')
+    def consult(self):
+        link = glob('*.txt')
         if(link):
              input = fileinput.input(link)
              for linea in input:
                 if self.palabra in linea:
-                    self.array.append(linea)
                     print(linea)
                 if not linea:
                     break
@@ -27,13 +27,12 @@ class Consulta(threading.Thread):
         else:
              return False
 
-    def consulta(self):
-        if self.buscar():
-            print("Encontro")
-        else:
+    def run(self):
+        if(self.consult()==False):
             print("Esperando que se carge")
             self.cond.acquire()
             self.cond.wait()
-            self.buscar()
+            self.consult()
             self.cond.release()
-            print("Ya cargado")
+            print("Ya cargado!")
+
