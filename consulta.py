@@ -28,10 +28,8 @@ class consulta(threading.Thread):
              return False
 
     def run(self):
-        if(self.consult()==False):
-            print("Esperando que se carge")
-            self.cond.acquire()
-            self.cond.wait()
-            self.consult()
-            self.cond.release()
+        cons = self.consult()
+        if(cons==False):
+            print("No se encontro")
+        else:
             print("Ya cargado!")

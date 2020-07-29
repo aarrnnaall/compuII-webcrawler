@@ -6,49 +6,46 @@ import urllib.request
 import sys
 from glob import glob
 import fileinput
-from imagen import Imagen
 import time
-class Thread(threading.Thread):
-    def __init__(self, url, cola):
-        self.url = url
-        self.cola = cola
-        self.threadId = self
-        threading.Thread.__init__(self)
-
-    def run(self):
-        print(self.getName())
-        try:
-            socket = urllib.request.urlopen(self.url)
-        except:
-            print("Error Temporary failure in name resolution")
-            socket = urllib.request.urlopen(self.url)
-        urlMarkUp = socket.read().decode("ascii", "ignore")
-        global linkHTMLParser
-        linkHTMLParser = LinkHTMLParser()
-        linkHTMLParser.feed(urlMarkUp)
-        urlsin = self.url.split('/')
-        archivomod = open(urlsin[2] + ".txt", 'a')
-        archivoleer = open(urlsin[2] + ".txt", 'r')
-        contenido = archivoleer.read()
-        urls = []
-        print("Empezando Crawler URL")
-        if contenido == '':
-            for link in linkHTMLParser.links:
-                link = urljoin(self.url, link)
-                urls.append(link)
-                print("\t" + link)
-                self.cola.put(link)
-                archivomod.write(link + "\n")
-            self.cola.put("False")
-            archivomod.close()
-        else:
-            input = fileinput.input(glob(urlsin[2] + ".txt"))
-            for linea in input:
-                self.cola.put(linea)
-            self.cola.put("False")
-            input.close()
-            print("Ya cargado!")
-
+from concurrent import futures
+import os, signal
+#lock = threading.Lock()
+def run(url):
+    print(format(threading.current_thread().name))
+    #lock.acquire()
+    try:
+        socket = urllib.request.urlopen(url)
+    except:
+        print("Error Temporary failure in name resolution")
+        socket = urllib.request.urlopen(url)
+    urlMarkUp = socket.read().decode("ascii", "ignore")
+    print("Llega URL al crawler: %s" % url)
+    global linkHTMLParser
+    linkHTMLParser = LinkHTMLParser()
+    linkHTMLParser.feed(urlMarkUp)
+    urlsin = url.split('/')
+    archivomod = open(urlsin[2] + ".txt", 'a')
+    archivoleer = open(urlsin[2] + ".txt", 'r')
+    contenido = archivoleer.read()
+    urls = []
+    if contenido == '':
+        for link in linkHTMLParser.links:
+            link = urljoin(url, link)
+            urls.append(link)
+            print("\t" + link)
+            #cola.put(link)
+            archivomod.write(link + "\n")
+        #cola.put("False")
+        archivomod.close()
+    else:
+    #    input = fileinput.input(glob(urlsin[2] + ".txt"))
+    #    for linea in input:
+    #        cola.put(linea)
+    #    cola.put("False")
+    #    input.close()
+        print("<Ya cargado Url %s >"%url)
+        #os.kill(os.getpid(), signal.SIGKILL)
+    #    lock.release()
 def cmp(a, b):
     return (a > b) - (a < b)
 
@@ -71,18 +68,11 @@ class LinkHTMLParser(HTMLParser):
     def handle_endtag(self, tag):
         pass
 
-class Crawler(threading.Thread):
-    def __init__(self, url,cola,cond):
-        self.url = url
-        self.cola = cola
-        self.cond=cond
 
-    def crawler(self):
-        self.cond.acquire()
-        #start_time = time.time()
-        for url in self.url:
-            Thread(url,self.cola).start()
-        #end_time = time.time()
-        self.cond.notify()
-        self.cond.release()
-        #print("Tiempo Crawler-Url: %s" % str(end_time-start_time))
+def crawler(url):
+        print("Empezando Crawler-URL")
+        print("<Executing on %d >" % os.getpid())
+        for elem in url:
+            print("<Con URL: %s >" %elem)
+            print("{}".format(futures.ThreadPoolExecutor(max_workers=5).submit(run, elem)))
+            time.sleep(5)
