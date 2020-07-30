@@ -10,13 +10,13 @@ import os, signal
 import time
 import socket
 from socketserver import ThreadingMixIn
+import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 crawler_pipe, imagen_pipe = multiprocessing.Pipe()
 class myHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         try:
-
             sendReply = False
             if self.path.endswith(".html"):
                 mimetype = 'text/html'
@@ -27,6 +27,9 @@ class myHandler(BaseHTTPRequestHandler):
             if self.path.endswith(".gif"):
                 mimetype = 'image/gif'
                 sendReply = True
+            if self.path.endswith(".png"):
+                mimetype = 'image/png'
+                sendReply = True
             if self.path.endswith(".js"):
                 mimetype = 'application/javascript'
                 sendReply = True
@@ -35,11 +38,11 @@ class myHandler(BaseHTTPRequestHandler):
                 sendReply = True
 
             if sendReply == True:
-                f = open(curdir + sep + self.path)
+                f = open(curdir + sep + self.path, 'rb')
                 self.send_response(200)
                 self.send_header('Content-type', mimetype)
                 self.end_headers()
-                self.wfile.write(f.read().encode(encoding='utf_8'))
+                self.wfile.write(f.read())
                 f.close()
             return
 
@@ -57,17 +60,33 @@ class myHandler(BaseHTTPRequestHandler):
             ing_url = form["url"].value
             urls = ing_url.split()
             q = multiprocessing.Queue()
-            p = multiprocessing.Process(target=crawler, args=(urls,q))
+            u = multiprocessing.Queue()
+            p = multiprocessing.Process(target=crawler, args=(urls,q,u))
             p.start()
-            i = multiprocessing.Process(target=imagen, args=(q,))
+            cant_prof=2
+
+            i = multiprocessing.Process(target=imagen, args=(q,cant_prof,u))
             i.start()
             i.join()
             p.join()
 
             print ("URl: %s" % ing_url)
+            archivoleer = open("resultado.html", 'r')
+            html = archivoleer.read()
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(("Thanks for this URL: %s " % ing_url).encode(encoding='utf_8'))
+            self.wfile.write(("%s " % html).encode(encoding='utf_8'))
+            if not u.empty():
+                while not u.empty():
+                    urls = u.get()
+                    print(urls)
+                    self.wfile.write(("<a href= %s" % urls + ">%s" % urls + "</a>").encode(encoding='utf_8'))
+                    self.wfile.write(("<br><br>").encode(encoding='utf_8'))
+            else:
+                print("No hay Resultado")
+                self.wfile.write(("<h2> No hay Resultado </h2>").encode(encoding='utf_8'))
+                self.wfile.write(("<br><br>").encode(encoding='utf_8'))
+
             return
 
         if self.path == "/sendconsulta":
@@ -79,14 +98,32 @@ class myHandler(BaseHTTPRequestHandler):
                          })
             consul = form["consulta"].value
             consultas = consul.split()
-            c = multiprocessing.Process(target=consulta, args=(consultas,))
+            r = multiprocessing.Queue()
+            c = multiprocessing.Process(target=consulta, args=(consultas,r))
             c.start()
             c.join()
-            print ("Buscado: %s" % consul)
+            archivoleer = open("resultado.html", 'r')
+            html = archivoleer.read()
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(("Thanks for this Search: %s " % consul).encode(encoding='utf_8'))
+            self.wfile.write(("%s " % html).encode(encoding='utf_8'))
+            print("Resultado Busquedad: ")
+            if not r.empty():
+                while not r.empty():
+                    busquedad = r.get()
+                    print(busquedad)
+                    self.wfile.write(("<a href= %s" % busquedad + ">%s" % busquedad + "</a>").encode(encoding='utf_8'))
+                    self.wfile.write(("<br><br>").encode(encoding='utf_8'))
+            else:
+                print("No hay Resultado")
+                self.wfile.write(("<h2> No hay Resultado </h2>").encode(encoding='utf_8'))
+                self.wfile.write(("<br><br>").encode(encoding='utf_8'))
+
+            print ("Buscado: %s" % consul)
             return
 
 class HTTPServerV6(HTTPServer):
     address_family = socket.AF_INET6
+
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """Handle requests in a separate thread."""

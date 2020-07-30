@@ -14,6 +14,7 @@ import os
 def run(url):
     print(format(threading.current_thread().name))
     print("<Executing on %d >"%os.getpid())
+    img = []
     try:
         print("Url: %s" % url)
         http = urllib3.PoolManager()
@@ -48,6 +49,7 @@ def run(url):
                     url_imagen = elem  # El link de la imagen
                     #print("CON http://")
                     print("URL Imagen: %s " % url_imagen);
+                    img.append(url_imagen)
                     nombre_local_imagen = dir.split("/")[0] + "/" + elem.split("/")[
                         len(elem.split("/")) - 1]  # El nombre con el que queremos guardarla
                     imagen = requests.get(url_imagen).content
@@ -57,6 +59,7 @@ def run(url):
                 except(IndexError):
                     http = url.split("/")[0] + "//" + url.split("/")[2] + "/"
                     url_imagen = http + elem  # El link de la imagen
+                    img.append(url_imagen)
                     #print("SIN http://")
                     print("URL Imagen: %s " % url_imagen);
                     nombre_local_imagen = dir.split("/")[0] + "/" + elem.split("/")[
@@ -66,19 +69,24 @@ def run(url):
                         handler.write(imagen)
     except requests.ConnectionError:  # This is the correct syntax
             print("Error Temporary failure")
+    return img
 
 
-def imagen(cola):
+def imagen(cola,p,cola2):
            print("Executing on Process: {}".format(os.getpid()))
            print("Empezando Crawler-Imagen")
            with futures.ThreadPoolExecutor(max_workers=2) as executor:
-                while True:
+                #while True:
+                for i in range(p):
                     url = cola.get()
                     if (url == "False"):
                         print("Termino")
                         break
                     future_to_url = executor.submit(run, url)
                 print(future_to_url)
+                print("Profundidad Imagen %d" %i)
+           for elem in future_to_url.result():
+               cola2.put(elem)
            print("Imagen Realizada")
 
 
