@@ -71,14 +71,14 @@ def run(url):
 def imagen(cola):
            print("Executing on Process: {}".format(os.getpid()))
            print("Empezando Crawler-Imagen")
-           #while True:
-           #    url = cola.get()
-           #    if (cola.get() == "False"):
-           #        print("Termino")
-           #        break
-           #    ex = futures.ThreadPoolExecutor(max_workers=1)
-           #    f = ex.submit(run, url)
-           #    print("{}".format(f))
-           #print("Imagen Realizada")
+           with futures.ThreadPoolExecutor(max_workers=2) as executor:
+                while True:
+                    url = cola.get()
+                    if (url == "False"):
+                        print("Termino")
+                        break
+                    future_to_url = executor.submit(run, url)
+                print(future_to_url)
+           print("Imagen Realizada")
 
 

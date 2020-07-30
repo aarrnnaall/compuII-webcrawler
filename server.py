@@ -8,6 +8,7 @@ import multiprocessing
 from imagen import imagen
 import os, signal
 import time
+import socket
 from socketserver import ThreadingMixIn
 from concurrent.futures import ProcessPoolExecutor
 crawler_pipe, imagen_pipe = multiprocessing.Pipe()
@@ -56,11 +57,12 @@ class myHandler(BaseHTTPRequestHandler):
             ing_url = form["url"].value
             urls = ing_url.split()
             q = multiprocessing.Queue()
-            executor = ProcessPoolExecutor(max_workers=2)
-            print("Proceso Crawler-Url: {}".format(executor.submit(crawler,urls)))
-                #time.sleep(10)
-           # IMG = executor.submit(imagen,q)
-           # print("Proceso Crawler-Imagen: {}".format(IMG))
+            p = multiprocessing.Process(target=crawler, args=(urls,q))
+            p.start()
+            i = multiprocessing.Process(target=imagen, args=(q,))
+            i.start()
+            i.join()
+            p.join()
 
             print ("URl: %s" % ing_url)
             self.send_response(200)
@@ -75,13 +77,16 @@ class myHandler(BaseHTTPRequestHandler):
                 environ={'REQUEST_METHOD': 'POST',
                          'CONTENT_TYPE': self.headers['Content-Type'],
                          })
-            nom_const = form["consulta"].value
-
-            p = multiprocessing.Process(target=consulta(nom_const).start())
-            p.start()
-            print("Proceso Consulta-URL: %s " % p.name + "con ID: " + str(p.pid))
-            print ("Buscado: %s" % nom_const)
+            consul = form["consulta"].value
+            consultas = consul.split()
+            c = multiprocessing.Process(target=consulta, args=(consultas,))
+            c.start()
+            c.join()
+            print ("Buscado: %s" % consul)
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(("Thanks for this Search: %s " % nom_const).encode(encoding='utf_8'))
+            self.wfile.write(("Thanks for this Search: %s " % consul).encode(encoding='utf_8'))
             return
+
+class HTTPServerV6(HTTPServer):
+    address_family = socket.AF_INET6

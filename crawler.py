@@ -9,10 +9,8 @@ import fileinput
 import time
 from concurrent import futures
 import os, signal
-#lock = threading.Lock()
-def run(url):
+def run(url,cola):
     print(format(threading.current_thread().name))
-    #lock.acquire()
     try:
         socket = urllib.request.urlopen(url)
     except:
@@ -33,19 +31,16 @@ def run(url):
             link = urljoin(url, link)
             urls.append(link)
             print("\t" + link)
-            #cola.put(link)
+            cola.put(link)
             archivomod.write(link + "\n")
-        #cola.put("False")
         archivomod.close()
     else:
-    #    input = fileinput.input(glob(urlsin[2] + ".txt"))
-    #    for linea in input:
-    #        cola.put(linea)
-    #    cola.put("False")
-    #    input.close()
+        input = fileinput.input(glob(urlsin[2] + ".txt"))
+        for linea in input:
+            cola.put(linea)
+        input.close()
         print("<Ya cargado Url %s >"%url)
-        #os.kill(os.getpid(), signal.SIGKILL)
-    #    lock.release()
+
 def cmp(a, b):
     return (a > b) - (a < b)
 
@@ -69,10 +64,12 @@ class LinkHTMLParser(HTMLParser):
         pass
 
 
-def crawler(url):
+def crawler(url,cola):
         print("Empezando Crawler-URL")
         print("<Executing on %d >" % os.getpid())
-        for elem in url:
-            print("<Con URL: %s >" %elem)
-            print("{}".format(futures.ThreadPoolExecutor(max_workers=5).submit(run, elem)))
-            time.sleep(5)
+        with futures.ThreadPoolExecutor(max_workers=2) as executor:
+            for elem in url:
+                print("<Con URL: %s >" %elem)
+                future_to_url = executor.submit(run, elem,cola)
+                print(future_to_url)
+        cola.put("False")
