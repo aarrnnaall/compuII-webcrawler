@@ -10,7 +10,7 @@ import os, signal
 import time
 import socket
 from socketserver import ThreadingMixIn
-import numpy as np
+#import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 crawler_pipe, imagen_pipe = multiprocessing.Pipe()
 class myHandler(BaseHTTPRequestHandler):
