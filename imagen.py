@@ -7,7 +7,7 @@ import urllib3
 import os
 from glob import glob
 import time
-import numpy as np
+#import numpy as np
 from concurrent import futures
 import os
 
