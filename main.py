@@ -3,6 +3,7 @@ from http.server import HTTPServer
 from server import HTTPServerV6
 from threading import Thread
 import multiprocessing
+import socket
 from socketserver import ThreadingMixIn
 PORT_NUMBER = 9090
 
@@ -28,6 +29,7 @@ try:
                 th6.terminate()
                 print("\nProcesos Terminado")
 except Exception:
-        server.socket.close()
+        server_ipv4.socket.close()
+        server_ipv6.socket.close()
 
 
