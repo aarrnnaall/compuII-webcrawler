@@ -73,8 +73,8 @@ def run(url):
 
 
 def imagen(cola,p,cola2):
-           print("Executing on Process: {}".format(os.getpid()))
            print("Empezando Crawler-Imagen")
+           print("<Executing on %d >" % os.getpid())
            with futures.ThreadPoolExecutor(max_workers=2) as executor:
                 #while True:
                 for i in range(p):
@@ -84,7 +84,8 @@ def imagen(cola,p,cola2):
                         break
                     future_to_url = executor.submit(run, url)
                 print(future_to_url)
-                print("Profundidad Imagen %d" %i)
+                prof=i+1
+                print("Profundidad Imagen %d" %prof)
            for elem in future_to_url.result():
                cola2.put(elem)
            print("Imagen Realizada")

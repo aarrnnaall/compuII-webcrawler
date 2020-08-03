@@ -10,9 +10,9 @@ import os, signal
 import time
 import socket
 from socketserver import ThreadingMixIn
-#import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 crawler_pipe, imagen_pipe = multiprocessing.Pipe()
+
 class myHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -62,10 +62,9 @@ class myHandler(BaseHTTPRequestHandler):
             q = multiprocessing.Queue()
             u = multiprocessing.Queue()
             p = multiprocessing.Process(target=crawler, args=(urls,q,u))
-            p.start()
             cant_prof=2
-
-            i = multiprocessing.Process(target=imagen, args=(q,cant_prof,u))
+            i = multiprocessing.Process(target=imagen, args=(q, cant_prof, u))
+            p.start()
             i.start()
             i.join()
             p.join()

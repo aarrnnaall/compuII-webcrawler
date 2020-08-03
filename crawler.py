@@ -11,6 +11,8 @@ from concurrent import futures
 import os, signal
 def run(url,cola,cola2):
     print(format(threading.current_thread().name))
+    print("<Executing on Process with: %d >" % os.getpid())
+
     try:
         socket = urllib.request.urlopen(url)
     except:
@@ -71,7 +73,6 @@ def crawler(url,cola,cola2):
         print("<Executing on %d >" % os.getpid())
         with futures.ThreadPoolExecutor(max_workers=2) as executor:
             for elem in url:
-                print("<Con URL: %s >" %elem)
                 future_to_url = executor.submit(run, elem,cola,cola2)
                 print(future_to_url)
         cola.put("False")
