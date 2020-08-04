@@ -10,15 +10,17 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--port", help="Puerto del Servidor", type=int, default=8080)
-#parser.add_argument("-u", "--url", help="Cantidad de Hilos en Crawler-Url", type=int, default=0)
-#parser.add_argument("-i", "--imagen", help="Cantidad de Hilos en Crawler-Imagenes",type=int, default=0)
-#parser.add_argument("-c", "--profun", help="Profundidad de Crawler-Imagen", type=int, default=1)
+parser.add_argument("-u", "--url", help="Cantidad de Hilos en Crawler-Url", type=int, default=0)
+parser.add_argument("-i", "--imagen", help="Cantidad de Hilos en Crawler-Imagenes",type=int, default=0)
+parser.add_argument("-c", "--profun", help="Profundidad de Crawler-Imagen", type=int, default=1)
 args = parser.parse_args()
 
-def arg_url():
-     return args.url
-def arg_img():
-     return args.imagen+"/"+args.profun
+class arg_url():
+    def return_url(self):
+        return args.url
+
+    def return_img(self):
+        return args.imagen+"/"+args.profun
 
 if args.port or args.imagen or args.url or args.profun:
         PORT_NUMBER=args.port

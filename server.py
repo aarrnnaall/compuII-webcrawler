@@ -16,6 +16,7 @@ crawler_pipe, imagen_pipe = multiprocessing.Pipe()
 class myHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
+        print(" Peticion GET" + " <" + format(threading.current_thread().name) + "> ")
         try:
             sendReply = False
             if self.path.endswith(".html"):
@@ -50,6 +51,7 @@ class myHandler(BaseHTTPRequestHandler):
             self.send_error(404, 'File Not Found: %s' % self.path)
 
     def do_POST(self):
+        print(" Peticion POST"+" <"+format(threading.current_thread().name)+"> ")
         if self.path == "/sendurl":
             form = cgi.FieldStorage(
                 fp=self.rfile,
@@ -62,7 +64,7 @@ class myHandler(BaseHTTPRequestHandler):
             q = multiprocessing.Queue()
             u = multiprocessing.Queue()
             p = multiprocessing.Process(target=crawler, args=(urls,q,u))
-            cant_prof=10
+            cant_prof=2
             i = multiprocessing.Process(target=imagen, args=(q, cant_prof, u))
             p.start()
             i.start()
