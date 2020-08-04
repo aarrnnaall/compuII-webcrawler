@@ -66,8 +66,7 @@ class myHandler(BaseHTTPRequestHandler):
             q = multiprocessing.Queue()
             u = multiprocessing.Queue()
             p = multiprocessing.Process(target=crawler, args=(urls,q,u))
-            cant_prof=2
-            i = multiprocessing.Process(target=imagen, args=(q, cant_prof, u))
+            i = multiprocessing.Process(target=imagen, args=(q, u))
             p.start()
             i.start()
             i.join()

@@ -28,6 +28,7 @@ def run(url):
             global images
             images = soup.findAll('img')
         except:
+            images = soup.findAll('img')
             print("Error No host specified.")
         links = []
         dire = url.split("//")[1]
@@ -75,7 +76,7 @@ def run(url):
     return img
 
 
-def imagen(cola,p,cola2):
+def imagen(cola,cola2):
            print("Empezando Crawler-Imagen")
            print("<Executing on %d >" % os.getpid())
            global max_workers
