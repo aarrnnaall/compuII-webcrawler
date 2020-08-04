@@ -62,7 +62,7 @@ class myHandler(BaseHTTPRequestHandler):
             q = multiprocessing.Queue()
             u = multiprocessing.Queue()
             p = multiprocessing.Process(target=crawler, args=(urls,q,u))
-            cant_prof=2
+            cant_prof=10
             i = multiprocessing.Process(target=imagen, args=(q, cant_prof, u))
             p.start()
             i.start()
@@ -121,8 +121,9 @@ class myHandler(BaseHTTPRequestHandler):
             print ("Buscado: %s" % consul)
             return
 
-class HTTPServerV6(HTTPServer):
+class ThreadedHTTPServerV6(ThreadingMixIn,HTTPServer):
     address_family = socket.AF_INET6
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    address_family = socket.AF_INET
     """Handle requests in a separate thread."""
