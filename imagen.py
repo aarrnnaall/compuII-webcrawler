@@ -10,7 +10,11 @@ import time
 #import numpy as np
 from concurrent import futures
 import os
-
+from configparser import ConfigParser
+parser = ConfigParser()
+parser.read('config_init.ini',encoding='utf-8')
+max_workers = parser.get('config_init', 'cant_worker_url')
+profund= parser.get('config_init', 'profun_img')
 def run(url):
     print(format(threading.current_thread().name))
     print("<Executing on %d >"%os.getpid())
@@ -24,7 +28,6 @@ def run(url):
             global images
             images = soup.findAll('img')
         except:
-            images = soup.findAll('img')
             print("Error No host specified.")
         links = []
         dire = url.split("//")[1]
@@ -75,9 +78,11 @@ def run(url):
 def imagen(cola,p,cola2):
            print("Empezando Crawler-Imagen")
            print("<Executing on %d >" % os.getpid())
-           with futures.ThreadPoolExecutor(max_workers=2) as executor:
+           global max_workers
+           global profund
+           with futures.ThreadPoolExecutor(max_workers=int(max_workers)) as executor:
                 #while True:
-                for i in range(p):
+                for i in range(int(profund)):
                     url = cola.get()
                     if (url == "False"):
                         print("Termino")

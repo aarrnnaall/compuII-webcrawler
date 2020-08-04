@@ -11,6 +11,8 @@ import time
 import socket
 from socketserver import ThreadingMixIn
 from concurrent.futures import ProcessPoolExecutor
+from configparser import ConfigParser
+
 crawler_pipe, imagen_pipe = multiprocessing.Pipe()
 
 class myHandler(BaseHTTPRequestHandler):

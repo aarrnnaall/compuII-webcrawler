@@ -9,7 +9,11 @@ import fileinput
 import time
 from concurrent import futures
 import os, signal
+from configparser import ConfigParser
 
+parser = ConfigParser()
+parser.read('config_init.ini',encoding='utf-8')
+max_workers = parser.get('config_init', 'cant_worker_url')
 
 def run(url,cola,cola2):
     print(format(threading.current_thread().name))
@@ -73,8 +77,10 @@ class LinkHTMLParser(HTMLParser):
 def crawler(url,cola,cola2):
         print("Empezando Crawler-URL")
         print("<Executing on %d >" % os.getpid())
-        with futures.ThreadPoolExecutor(max_workers=2) as executor:
+        global max_workers
+        with futures.ThreadPoolExecutor(max_workers=int(max_workers)) as executor:
             for elem in url:
-                future_to_url = executor.submit(run, elem,cola,cola2)
+                future_to_url = executor.submit(run, elem, cola, cola2)
                 print(future_to_url)
+
         cola.put("False")
